@@ -1,5 +1,9 @@
-target/*
 .DS_Store
+target/*	
+.idea/*
+chat.iml
+.settings/*
+target/*
 .classpath
 .project
 .settings/*
