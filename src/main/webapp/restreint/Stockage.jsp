@@ -19,7 +19,7 @@ for (String mapKey : GestionMessages.getMap().keySet() ) {
 	 for (int i=0; i<GestionMessages.nombreMessage(mapKey) ;i++ ){
 		 
 			out.println("  <LI>"+ GestionMessages.getMessages(mapKey).get(i).getUser()+": "
-				+ GestionMessages.getMessages(mapKey).get(i).getMessage() + "\n" +
+				+ GestionMessages.getMessages(mapKey).get(i).getContenu() + "\n" +
 					"</UL>" );
 			}
 	 out.println("</BODY><br></HTML>"); 

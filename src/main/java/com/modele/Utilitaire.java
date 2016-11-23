@@ -2,27 +2,30 @@ package com.modele;
 
 import javax.servlet.http.Cookie;
 
+/**
+ * @author sofia faddi
+ */
 public class Utilitaire {
+
+    private Utilitaire(){
+        /* On cache le constructeur */
+    }
 
 	 /**
      * Recherche le cookie "cookieCherche" et le renvoie
      * @param cookies un tableau de cookies
-     * @param cookieCherche le cookie recherch�
+     * @param cookieCherche le cookie recherché
      * @return revoie le cookie si il existe, null sinon
-     * author sofia faddi
      */
     public static Cookie getCookie(Cookie[] cookies, String cookieCherche){
 
         if(cookies != null){
-            
             //recherche du bon cookie
-            for(int i = 0; i < cookies.length; i++) {
-            	System.out.println("getname="+cookies[i].getName());
-                if (cookies[i].getName().equals(cookieCherche))
-                    return cookies[i];
+            for (Cookie cooky : cookies) {
+                if (cooky.getName().equals(cookieCherche))
+                    return cooky;
             }
         }
-        System.out.println("null");
         return null;
     }
 

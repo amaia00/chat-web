@@ -13,12 +13,12 @@
 	<iframe src="restreint/Affichage.jsp" name="Affichageframe"></iframe>	
 	<form action="Stockage" class="formmessage" method="POST">
 		<label style="margin:30px 0;">Message: </label><br/>
-	<textarea class="form-control" rows="3" name="message"></textarea>
+	<textarea class="form-control" rows="3" name="contenu"></textarea>
 		<input type="submit" class="btn btn-primary" value="envoyer">
 	</form>
 
 	<!--Récupération de l'objet depuis la session -->
-	<!-- String message = (String) session.getAttribute( "message" ); `*/ -->
+	<!-- String contenu = (String) session.getAttribute( "contenu" ); `*/ -->
     <!--  Bouton se déconnecter avec le parametre name deco  -->
 	<a data-method="get" class='btn btn-success' href="/TPChat1/Init" data-parameter-name="deco" data-parameter-value="true">Déconnexion</a>
 </div>

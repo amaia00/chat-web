@@ -1,8 +1,5 @@
 <jsp:useBean id="GestionMessages" scope="application"
 	class="com.modele.GestionMessages" />
-<%@page import="com.modele.Message"%>
-<%@page import="java.util.Date"%>
-<%@page import="java.util.ArrayList"%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -14,11 +11,7 @@
 	<title>Message</title>
 </head>
 <body>
-	<jsp:include page="Stockage.jsp"/>
- 
-	<jsp:forward page="Affichage.jsp"/>
-
-
-
+	<jsp:include page="stockage.jsp"/>
+	<jsp:forward page="affichage.jsp"/>
 </body>
 </html>

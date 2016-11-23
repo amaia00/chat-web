@@ -2,6 +2,8 @@
 	class="com.modele.GestionMessages" />
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<!-- TODO controler que les champs de pseudo et salon ne pourront pas etre vides -->
+<!-- TODO ameliorer la page pour pouvoir s'inscrire et se connecter dans le même index -->
 <!DOCTYPE HTML5>
 <html>
 	<head>
@@ -20,7 +22,7 @@
 				<div class="image_accueil"><img alt="Image de bienvenue" src="resources/images/chatimage.png"></div>
 				<h2>Bienvenue sur le chat en ligne</h2>
 				<form method ="POST" action="Init">
-					<p>Entrer votre nom pour se connecter et choisissez un salon si vous vous voulez accèder un salon existant cliquez sur la flêche" </p>
+					<p>Entrer votre nom pour se connecter et choisissez un salon si vous vous voulez accèder un salon existant cliquez sur la flêche </p>
 					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
 						<div class="input-group">
 			 				 <span class="input-group-addon" id="basic-addon1">@</span>
@@ -32,20 +34,51 @@
 			 				 <span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-home"></i></span>
 			  				<input id="basicaddon2input" type="text" class="form-control" placeholder="salon" name="salon" aria-describedby="basic-addon2"><a class="clickbt" href=#><i class="glyphicon glyphicon-play"></i></a>
 						</div>
-						
-						
-          <%int i=0;   
-          // Verifier si la listes des salons n'est pas vide pour donner à l'utilisateur le droit de choisir un salon)
-    		if (GestionMessages.getMap().keySet().size()!=0){ %>
-    			<select class="salon form-control" name="salon" >	
-    			<option class="optionnumber" value=""></option> 
-    		<% for (String mapKey : GestionMessages.getMap().keySet() ) {
-		%> <option class="optionnumber" value="<%=mapKey%>"><%=mapKey%></option> 
-		<% }}%>
-       </select>
+					  	<%
+							// Verifier si la listes des salons n'est pas vide pour donner
+							// à l'utilisateur le droit de choisir un salon)
+						  if (GestionMessages.getMap().keySet().size() != 0){ %>
+								<select class="salon form-control" name="salon" >
+									<option class="optionnumber" value=""></option>
+							<% for (String mapKey : GestionMessages.getMap().keySet()) {%>
+									<option class="optionnumber" value="<%=mapKey%>"><%=mapKey%></option>
+							<% } %>
+								</select>
+						<% } %>
 					</div>
 					<button type="submit" class="btn btn-primary">Se connecter</button>
 				</form>
+
+				<!-- Inscription -->
+				<form method ="POST" action="/backoffice/user">
+					<p> </p>
+					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon1">@</span>
+							<input type="text" class="form-control" placeholder="Pseudo" name="username" aria-describedby="basic-addon1">
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-home"></i></span>
+							<input id="basicaddon2input" type="text" class="form-control" placeholder="Prenom" name="name" aria-describedby="basic-addon2"><a class="clickbt" href=#><i class="glyphicon glyphicon-play"></i></a>
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-home"></i></span>
+							<input id="basicaddon2input" type="text" class="form-control" placeholder="Nom" name="lastName" aria-describedby="basic-addon2"><a class="clickbt" href=#><i class="glyphicon glyphicon-play"></i></a>
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
+						<div class="input-group">
+							<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-home"></i></span>
+							<input id="basicaddon2input" type="text" class="form-control" placeholder="Mail" name="mail" aria-describedby="basic-addon2"><a class="clickbt" href=#><i class="glyphicon glyphicon-play"></i></a>
+						</div>
+					</div>
+					<button type="submit" class="btn btn-primary">S'inscrire</button>
+				</form>
+
 			</div>
 		</div>
 	</div>

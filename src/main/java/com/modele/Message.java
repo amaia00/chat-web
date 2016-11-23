@@ -3,21 +3,17 @@ package com.modele;
 import java.util.Date;
 
 public class Message {
-	private String message;
+	private String contenu;
 	private String user;
 	private Date date;
-	
-	public Message(){
-	}
-	
 
-	public String getMessage() {
-		return message;
+	public String getContenu() {
+		return contenu;
 	}
 
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setContenu(String contenu) {
+		this.contenu = contenu;
 	}
 
 
@@ -43,7 +39,7 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return user+": "+message+"  ----" + date.toString()+"\n";
+		return user+": "+ contenu +"  ----" + date.toString()+"\n";
 	}
 	
 
