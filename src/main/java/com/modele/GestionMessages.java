@@ -57,7 +57,7 @@ public class GestionMessages {
         if (map.containsKey(salon)) {
             return map.get(salon);
         } else {
-            return map.put(salon, new ArrayList<Message>());
+            return map.put(salon, new ArrayList<>());
         }
     }
 

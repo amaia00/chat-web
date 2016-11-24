@@ -37,7 +37,7 @@ public class Init extends HttpServlet {
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String deconnexion = request.getParameter("deco");
+        String deconnexion = request.getParameter("deco");
 		HttpSession session = request.getSession();
 		
 		if(deconnexion != null && deconnexion.equals(TRUE)){
@@ -54,7 +54,7 @@ public class Init extends HttpServlet {
                 LOGGER.log(Level.FINE, e.getMessage(), e);
             }
 		}else{
-			RequestDispatcher dispatcher =getServletContext().getRequestDispatcher("/restreint/interface.jsp");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/restreint/interface.jsp");
 			try {
                 dispatcher.forward(request, response);
             }catch (Exception e){

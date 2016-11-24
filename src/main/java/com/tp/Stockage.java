@@ -49,15 +49,14 @@ public class Stockage extends HttpServlet {
 		HttpSession session = request.getSession();
 
 		String pseudo = session.getAttribute("pseudo").toString();
-		String message = request.getParameter("message");
+		String message = request.getParameter("contenu");
 		String salon = session.getAttribute("salon").toString();
 		
 
 		if (message!=null){
 			//AJOUTER MESSAGE SALON
-			GestionMessages.addMessage(message , pseudo,salon);
-
-		}		
+			GestionMessages.addMessage(message, pseudo, salon);
+		}
 		request.setAttribute("salon", salon);
 		RequestDispatcher dp = request.getRequestDispatcher("/restreint/interface.jsp");
 		try {

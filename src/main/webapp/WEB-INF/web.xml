@@ -64,14 +64,14 @@
 
 
     <servlet>
-        <servlet-name>backoffice</servlet-name>
+        <servlet-name>back-office</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>backoffice</servlet-name>
-        <url-pattern>/backoffice/*</url-pattern>
+        <servlet-name>back-office</servlet-name>
+        <url-pattern>/back-office/*</url-pattern>
     </servlet-mapping>
 
     <error-page>

@@ -1,10 +1,13 @@
-<jsp:useBean id="GestionMessages" scope="application"
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.modele.GestionMessages" %>
+<%@ page import="com.modele.Utilitaire" %>
+<jsp:useBean id="gestion" scope="application"
              class="com.modele.GestionMessages"/>
-<jsp:useBean id="Utilitaire" scope="application"
+<jsp:useBean id="util" scope="application"
              class="com.modele.Utilitaire"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
-<!DOCTYPE HTML5">
+<!DOCTYPE html5">
 <html>
 <head>
 <!-- Encodage CSS BOOSTRAP et personalisé -->
@@ -23,8 +26,8 @@
     String nomCookie = "lastModifiedChatRoom";
     Cookie tmpCookie = Utilitaire.getCookie(request.getCookies(), nomCookie);
 
-    int nbMessClient = 0;
-    int nbMessServeur = 0;
+    int nbMessClient;
+    int nbMessServeur;
 
     //gestion.ajouterMessage(new Message("Bob", "test")); //test
 
@@ -34,7 +37,6 @@
         Cookie creation = new Cookie(nomCookie, "0");
         creation.setMaxAge(60);
         response.addCookie(creation);
-        //response.setStatus(204);
         tmpCookie = creation;
     } else {
         if (tmpCookie.getMaxAge() == 0) {
@@ -49,34 +51,28 @@
         nbMessClient = Integer.parseInt(tmpCookie.getValue());
         //nb messages côté serveur
         nbMessServeur = GestionMessages.nombreMessage(salon);
-        System.out.println("nbMessServeur=" + nbMessServeur + "  // nbMessClient = " + nbMessClient);
-			/*
-			* Comparaison du nombre de messages, client/serveur.
-			* Si < est vrai, alors on va chercher les nouveaux messages,
-			* sinon on dit au client qu'il n'y a pas de nouveau contenu à récupérer (204)
-			*/
+
+        /*
+		* Comparaison du nombre de messages, client/serveur.
+		* Si < est vrai, alors on va chercher les nouveaux messages,
+		* sinon on dit au client qu'il n'y a pas de nouveau contenu à récupérer (204)
+		*/
 
         if (GestionMessages.nombreMessage(salon) != 0) {
             if (nbMessClient < nbMessServeur) {
-                //tmpCookie.setValue(gestion.stringSize()); //-> ne fonctionne pas
                 response.addCookie(new Cookie(nomCookie, "" + GestionMessages.nombreMessage(salon)));
             } else if (nbMessClient == nbMessServeur) {
-                //Envoie de "204 No Content" => aucun nouveau contenu à récupérer (par défaut : 200 OK)
                 response.setStatus(204);
             } else {
                 Cookie creation = new Cookie(nomCookie, "0");
                 creation.setMaxAge(60);
                 response.addCookie(creation);
-                //response.setStatus(204);
-                tmpCookie = creation;
             }
 
         } else {
             Cookie creation = new Cookie(nomCookie, "0");
             creation.setMaxAge(60);
             response.addCookie(creation);
-            //response.setStatus(204);
-            tmpCookie = creation;
         }
 
     }
@@ -86,32 +82,26 @@
     }
 %>
 
-
-<%
-    out.println("<div class='panel panel-info'><div class='panel-heading'><h3 class='panel-title'>Listes des messages</h3> </div><div class='panel-body'><br>");
-
-    if (salon.equals("null")) {
-        // Boucle qui parcout
-        for (String mapKey : GestionMessages.getMap().keySet()) {
-            out.println(" <h4>Binevenue au salon : " + mapKey + " , Dorenavant vous avez la possibilité de discuter avec tous les membres du salon</h4>");
-            for (int i = 0; i < GestionMessages.nombreMessage(mapKey); i++) {
-
-                out.println("  <LI>" + GestionMessages.getMessages(mapKey).get(i).toString() + "</UL>");
-
-            }
-
-        }
-    } else {
-        out.println("<h4> Bienvenue au salon : " + salon + " Dorenavant vous avez la possibilité de discuter avec tous les membres du salon </h4>");
-        for (int i = 0; i < GestionMessages.nombreMessage(salon); i++) {
-
-            out.println("<div class='block_message'><h4 class='user_user'><i class='glyphicon glyphicon-user'></i>" + GestionMessages.getMessages(salon).get(i).getUser() + " a dit :</h4>");
-            out.println("<h5 class='message_user'>" + GestionMessages.getMessages(salon).get(i).getContenu() + "</h5>");
-            out.println("<div class='date_user'>" + GestionMessages.getMessages(salon).get(i).getDate() + "</div></div>");
-        }
-        out.println("</div>");
-    }
-
-%>
+<div class='panel panel-info'>
+    <div class='panel-heading'><h3 class='panel-title'>Listes des messages</h3>
+    </div>
+    <div class='panel-body'><br>
+        <c:choose>
+            <c:when test="${not empty messages}">
+                <c:forEach items="${messages}" var="message">
+                    <div class='block_message'>
+                        <h4 class='user_user'><i class='glyphicon glyphicon-user'></i> ${message.user} a dit :</h4>
+                        <h5 class='message_user'>${message.contenu}</h5>
+                        <div class='date_user'>${message.date}</div>
+                    </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <h4>Binevenue au salon ${salon} Dorenavant vous avez la possibilité de discuter avec tous les
+                    membres du salon </h4>
+            </c:otherwise>
+        </c:choose>
+    </div>
+</div>
 </body>
 </html>

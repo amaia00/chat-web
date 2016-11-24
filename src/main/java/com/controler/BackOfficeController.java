@@ -20,7 +20,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/")
-public class BackofficeController {
+public class BackOfficeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String test(Model model) {

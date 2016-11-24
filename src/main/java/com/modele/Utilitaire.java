@@ -7,10 +7,6 @@ import javax.servlet.http.Cookie;
  */
 public class Utilitaire {
 
-    private Utilitaire(){
-        /* On cache le constructeur */
-    }
-
 	 /**
      * Recherche le cookie "cookieCherche" et le renvoie
      * @param cookies un tableau de cookies

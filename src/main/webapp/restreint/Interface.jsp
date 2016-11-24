@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<!DOCTYPE HTML5">
+<!DOCTYPE html5">
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -10,7 +10,7 @@
 	</head>
 <body>
 <div class="container">
-	<iframe src="restreint/Affichage.jsp" name="Affichageframe"></iframe>	
+	<iframe src="back-office/${salon}" name="Affichageframe"></iframe>
 	<form action="Stockage" class="formmessage" method="POST">
 		<label style="margin:30px 0;">Message: </label><br/>
 	<textarea class="form-control" rows="3" name="contenu"></textarea>
@@ -18,10 +18,8 @@
 	</form>
 
 	<!--Récupération de l'objet depuis la session -->
-	<!-- String contenu = (String) session.getAttribute( "contenu" ); `*/ -->
     <!--  Bouton se déconnecter avec le parametre name deco  -->
-	<a data-method="get" class='btn btn-success' href="/TPChat1/Init" data-parameter-name="deco" data-parameter-value="true">Déconnexion</a>
+	<a data-method="get" class='btn btn-success' href="Init" data-parameter-name="deco" data-parameter-value="true">Déconnexion</a>
 </div>
-
 </body>
 </html>
