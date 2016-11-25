@@ -1,8 +1,7 @@
 package com.chat.controler;
 
-import com.chat.modele.ChatGestionService;
 import com.chat.modele.GestionMessage;
-import com.chat.modele.ChatGestionUtilisateur;
+import com.chat.modele.GestionUtilisateur;
 import com.chat.modele.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -27,13 +27,13 @@ public class BackOfficeController {
 
     private GestionMessage gestionMessage;
 
-    private ChatGestionUtilisateur chatGestionUtilisateur;
+    private GestionUtilisateur gestionUtilisateur;
 
     @Autowired
-    public BackOfficeController(ChatGestionService gestionMessage,
-                                ChatGestionUtilisateur chatGestionUtilisateur) {
+    public BackOfficeController(GestionMessage gestionMessage,
+                                GestionUtilisateur gestionUtilisateur) {
         this.gestionMessage = gestionMessage;
-        this.chatGestionUtilisateur = chatGestionUtilisateur;
+        this.gestionUtilisateur = gestionUtilisateur;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -47,8 +47,9 @@ public class BackOfficeController {
                           @RequestParam(value = "name") String name,
                           @RequestParam(value = "lastName") String lastName,
                           @RequestParam(value = "mail") String mail,
+                          HttpServletRequest request,
                           Model model) {
-        chatGestionUtilisateur.addUser(pseudo, name, lastName, mail);
+        gestionUtilisateur.addUser(pseudo, name, lastName, mail, request.getAttribute("salon").toString());
 
         return "index";
     }

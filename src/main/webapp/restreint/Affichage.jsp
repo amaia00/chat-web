@@ -1,9 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.chat.modele.Utilitaire" %>
+<%@ page import="com.chat.util.Utilitaire" %>
 <jsp:useBean id="gestion" scope="application"
              class="com.chat.modele.ChatGestionService"/>
 <jsp:useBean id="util" scope="application"
-             class="com.chat.modele.Utilitaire"/>
+             class="com.chat.util.Utilitaire"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html5">

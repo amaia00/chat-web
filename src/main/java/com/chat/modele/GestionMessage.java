@@ -14,10 +14,10 @@ public interface GestionMessage {
      * Méthode qui permet d'ajouter un message à un salon
      *
      * @param contenu le contenu du message
-     * @param pseudo  le pseudo de l'utilisateur
+     * @param user  l'entité de l'utilisateur
      * @param salon   le salon du chat
      */
-    void addMessage(String contenu, String pseudo, String salon);
+    void addMessage(String contenu, User user, String salon);
 
     /**
      * Cette méthode permet d'ajouter un salon

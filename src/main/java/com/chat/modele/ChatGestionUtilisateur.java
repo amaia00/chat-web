@@ -2,8 +2,9 @@ package com.chat.modele;
 
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Amaia Nazábal
@@ -13,19 +14,24 @@ import java.util.List;
 @Service
 public class ChatGestionUtilisateur implements GestionUtilisateur {
 
-
-    private List<User> userList = new ArrayList<>();
+    private Map<String, List<User>> userList = new HashMap<>();
 
     @Override
-    public void addUser(String pseudo, String prenom, String nom, String mail){
+    public void addUser(String pseudo, String prenom, String nom, String mail,
+                        String salon) {
         User user = new User(pseudo, prenom, nom, mail);
-        userList.add(user);
+        userList.get(salon).add(user);
     }
 
     @Override
-    public boolean existsUser(User user) {
-        return userList.stream().filter(u -> u.getPseudo().equals(user.getPseudo()))
+    public boolean existsUser(String pseudo, String salon) {
+        return userList.get(salon).stream().filter(u -> u.getPseudo().equals(pseudo))
                 .findFirst().isPresent();
     }
 
+    @Override
+    public User getUserByPseudo(String pseudo, String salon) {
+        return userList.get(salon).stream().filter(u -> u.getPseudo().equals(pseudo))
+                .findFirst().orElse(null);
+    }
 }

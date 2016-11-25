@@ -16,10 +16,10 @@ public class ChatGestionService implements GestionMessage {
     private Map<String, List<Message>> map = new HashMap<>();
 
     @Override
-    public void addMessage(String contenu, String pseudo, String salon) {
+    public void addMessage(String contenu, User user, String salon) {
         Message message = new Message();
         message.setContenu(contenu);
-        message.setUser(pseudo);
+        message.setUser(user);
         message.setDate(new Date());
 
         if (map.containsKey(salon)) {
@@ -59,6 +59,7 @@ public class ChatGestionService implements GestionMessage {
      * @param salon le nom du salon
      * @return
      */
+    @Override
     public int nombreMessage(String salon) {
         if (map.containsKey(salon)) {
             return map.get(salon).size();

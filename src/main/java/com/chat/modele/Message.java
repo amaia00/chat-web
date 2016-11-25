@@ -5,7 +5,7 @@ import java.util.Date;
 public class Message {
 
 	private String contenu;
-	private String user;
+	private User user;
 	private Date date;
 
 	public String getContenu() {
@@ -18,12 +18,12 @@ public class Message {
 	}
 
 
-	public String getUser() {
+	public User getUser() {
 		return user;
 	}
 
 
-	public void setUser(String user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 

@@ -1,6 +1,8 @@
 package com.chat.tp;
 
 import com.chat.modele.GestionMessage;
+import com.chat.modele.GestionUtilisateur;
+import com.chat.modele.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -29,6 +31,9 @@ public class Stockage extends HttpServlet {
 
     @Autowired
     public GestionMessage gestionMessage;
+
+	@Autowired
+	public GestionUtilisateur gestionUtilisateur;
 
     /**
      * @see HttpServlet#HttpServlet()
@@ -64,11 +69,13 @@ public class Stockage extends HttpServlet {
 
 		if (message != null){
 			//AJOUTER MESSAGE SALON
-			gestionMessage.addMessage(message , pseudo,salon);
+			User user = gestionUtilisateur.getUserByPseudo(pseudo, salon);
+			gestionMessage.addMessage(message , user, salon);
 
 		}
 		request.setAttribute("salon", salon);
 		RequestDispatcher dp = request.getRequestDispatcher("/restreint/interface.jsp");
+
 		try {
 			dp.forward(request, response);
 		} catch (Exception e){
@@ -76,6 +83,7 @@ public class Stockage extends HttpServlet {
 		}
 	}
 
+	@Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
