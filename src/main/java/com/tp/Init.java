@@ -39,9 +39,10 @@ public class Init extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String deconnexion = request.getParameter("deco");
 		HttpSession session = request.getSession();
-		
+
 		if(deconnexion != null && deconnexion.equals(TRUE)){
 			session.invalidate();
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
 		}
 
 		pseudo = session.getAttribute(USERNAME).toString();
@@ -96,7 +97,7 @@ public class Init extends HttpServlet {
                 LOGGER.log(Level.FINE, e.getMessage(), e);
 			}
 			
-	    }
+	}
 	}
 }
 	
