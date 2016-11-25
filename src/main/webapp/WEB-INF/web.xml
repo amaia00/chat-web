@@ -9,7 +9,7 @@
         <description> </description>
         <display-name>MessageFilter</display-name>
         <filter-name>MessageFilter</filter-name>
-        <filter-class>com.filter.MessageFilter</filter-class>
+        <filter-class>com.chat.filter.MessageFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>MessageFilter</filter-name>
@@ -22,28 +22,28 @@
     <servlet>
         <display-name>Init</display-name>
         <servlet-name>Init</servlet-name>
-        <servlet-class>com.tp.Init</servlet-class>
+        <servlet-class>com.chat.tp.Init</servlet-class>
     </servlet>
     <servlet>
         <description>
         </description>
         <display-name>Stockage</display-name>
         <servlet-name>Stockage</servlet-name>
-        <servlet-class>com.tp.Stockage</servlet-class>
+        <servlet-class>com.chat.tp.Stockage</servlet-class>
     </servlet>
     <servlet>
         <description>
         </description>
         <display-name>Message</display-name>
         <servlet-name>Message</servlet-name>
-        <servlet-class>com.tp.Message</servlet-class>
+        <servlet-class>com.chat.tp.Message</servlet-class>
     </servlet>
     <servlet>
         <description>
         </description>
         <display-name>Affichage</display-name>
         <servlet-name>Affichage</servlet-name>
-        <servlet-class>com.tp.Affichage</servlet-class>
+        <servlet-class>com.chat.tp.Affichage</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Init</servlet-name>
@@ -67,12 +67,28 @@
         <servlet-name>back-office</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>/WEB-INF/back-office-servlet.xml</param-value>
+        </init-param>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>back-office</servlet-name>
         <url-pattern>/back-office/*</url-pattern>
     </servlet-mapping>
+
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
+
 
     <error-page>
         <error-code>404</error-code>

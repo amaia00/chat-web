@@ -1,4 +1,4 @@
-package com.modele;
+package com.chat.modele;
 
 /**
  * @author Amaia Nazábal

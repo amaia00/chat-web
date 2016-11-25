@@ -1,4 +1,4 @@
-package com.filter;
+package com.chat.filter;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

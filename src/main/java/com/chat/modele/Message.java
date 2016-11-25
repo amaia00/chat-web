@@ -1,8 +1,9 @@
-package com.modele;
+package com.chat.modele;
 
 import java.util.Date;
 
 public class Message {
+
 	private String contenu;
 	private String user;
 	private Date date;

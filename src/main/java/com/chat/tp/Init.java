@@ -1,4 +1,4 @@
-package com.tp;
+package com.chat.tp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -72,7 +72,6 @@ public class Init extends HttpServlet {
 		// recupérer le pseudo et le salon depuis le formulaire index
         String salon = request.getParameter(CHANNEL);
         pseudo = request.getParameter(USERNAME);
-
 
         // si null redirection vers la page index.jsp
         if (pseudo == null|| session == null || salon == null) {

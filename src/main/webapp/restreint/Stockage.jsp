@@ -1,5 +1,5 @@
-<jsp:useBean id="GestionMessages"  scope="session"
-             class="com.modele.GestionMessages"/>
+<jsp:useBean id="gestion"  scope="session"
+             class="com.chat.modele.ChatGestionService"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html5">
@@ -14,12 +14,12 @@
 
 out.println("<HTML>\n<BODY>---Liste des salons: <br><br>"); 
 
-for (String mapKey : GestionMessages.getMap().keySet() ) {
+for (String mapKey : gestion.getMap().keySet() ) {
 	 out.println("--"+mapKey+" :<br>");
-	 for (int i=0; i<GestionMessages.nombreMessage(mapKey) ;i++ ){
+	 for (int i=0; i<gestion.nombreMessage(mapKey) ;i++ ){
 		 
-			out.println("  <LI>"+ GestionMessages.getMessages(mapKey).get(i).getUser()+": "
-				+ GestionMessages.getMessages(mapKey).get(i).getContenu() + "\n" +
+			out.println("  <LI>"+ gestion.getMessages(mapKey).get(i).getUser()+": "
+				+ gestion.getMessages(mapKey).get(i).getContenu() + "\n" +
 					"</UL>" );
 			}
 	 out.println("</BODY><br></HTML>"); 

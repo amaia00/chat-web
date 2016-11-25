@@ -1,4 +1,4 @@
-package com.modele;
+package com.chat.modele;
 
 import javax.servlet.http.Cookie;
 

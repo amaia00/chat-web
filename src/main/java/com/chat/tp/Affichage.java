@@ -1,4 +1,4 @@
-package com.tp;
+package com.chat.tp;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;

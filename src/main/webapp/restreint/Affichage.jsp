@@ -1,10 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.modele.GestionMessages" %>
-<%@ page import="com.modele.Utilitaire" %>
+<%@ page import="com.chat.modele.Utilitaire" %>
 <jsp:useBean id="gestion" scope="application"
-             class="com.modele.GestionMessages"/>
+             class="com.chat.modele.ChatGestionService"/>
 <jsp:useBean id="util" scope="application"
-             class="com.modele.Utilitaire"/>
+             class="com.chat.modele.Utilitaire"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html5">
@@ -50,7 +49,7 @@
         //nb messages côté client
         nbMessClient = Integer.parseInt(tmpCookie.getValue());
         //nb messages côté serveur
-        nbMessServeur = GestionMessages.nombreMessage(salon);
+        nbMessServeur = gestion.nombreMessage(salon);
 
         /*
 		* Comparaison du nombre de messages, client/serveur.
@@ -58,9 +57,9 @@
 		* sinon on dit au client qu'il n'y a pas de nouveau contenu à récupérer (204)
 		*/
 
-        if (GestionMessages.nombreMessage(salon) != 0) {
+        if (gestion.nombreMessage(salon) != 0) {
             if (nbMessClient < nbMessServeur) {
-                response.addCookie(new Cookie(nomCookie, "" + GestionMessages.nombreMessage(salon)));
+                response.addCookie(new Cookie(nomCookie, "" + gestion.nombreMessage(salon)));
             } else if (nbMessClient == nbMessServeur) {
                 response.setStatus(204);
             } else {

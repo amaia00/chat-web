@@ -1,5 +1,5 @@
 <jsp:useBean id="GestionMessages" scope="application"
-	class="com.modele.GestionMessages" />
+	class="com.chat.modele.ChatGestionService" />
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!-- TODO controler que les champs de pseudo et salon ne pourront pas etre vides -->
@@ -50,6 +50,7 @@
 				</form>
 
 				<!-- Inscription -->
+				<!--
 				<form method ="POST" action="/backoffice/user">
 					<p> </p>
 					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
@@ -77,7 +78,7 @@
 						</div>
 					</div>
 					<button type="submit" class="btn btn-primary">S'inscrire</button>
-				</form>
+				</form>-->
 
 			</div>
 		</div>

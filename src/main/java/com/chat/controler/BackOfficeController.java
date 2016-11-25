@@ -1,8 +1,10 @@
-package com.controler;
+package com.chat.controler;
 
-import com.modele.GestionMessages;
-import com.modele.GestionUtilisateurs;
-import com.modele.Message;
+import com.chat.modele.ChatGestionService;
+import com.chat.modele.GestionMessage;
+import com.chat.modele.ChatGestionUtilisateur;
+import com.chat.modele.Message;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -22,6 +24,18 @@ import java.util.List;
 @RequestMapping("/")
 public class BackOfficeController {
 
+
+    private GestionMessage gestionMessage;
+
+    private ChatGestionUtilisateur chatGestionUtilisateur;
+
+    @Autowired
+    public BackOfficeController(ChatGestionService gestionMessage,
+                                ChatGestionUtilisateur chatGestionUtilisateur) {
+        this.gestionMessage = gestionMessage;
+        this.chatGestionUtilisateur = chatGestionUtilisateur;
+    }
+
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String test(Model model) {
         model.addAttribute("salut", "SALUT!");
@@ -34,7 +48,7 @@ public class BackOfficeController {
                           @RequestParam(value = "lastName") String lastName,
                           @RequestParam(value = "mail") String mail,
                           Model model) {
-        GestionUtilisateurs.addUser(pseudo, name, lastName, mail);
+        chatGestionUtilisateur.addUser(pseudo, name, lastName, mail);
 
         return "index";
     }
@@ -42,16 +56,18 @@ public class BackOfficeController {
     @RequestMapping(value = "/{salon}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap, @PathVariable String salon) {
 
-        List<Message> messages = GestionMessages.getMessages(salon);
+        List<Message> messages = gestionMessage.getMessages(salon);
         modelMap.put("messages", messages);
 
         return "restreint/affichage";
     }
 
     @RequestMapping(value = "/{salon}/{num}", method = RequestMethod.GET)
-    public String listMessages(ModelMap modelMap, @PathVariable String salon, @PathVariable Integer num) {
+    public String listMessages(ModelMap modelMap,
+                               @PathVariable String salon,
+                               @PathVariable Integer num) {
 
-        List<Message> messages = GestionMessages.getMessages(salon);
+        List<Message> messages = gestionMessage.getMessages(salon);
         Message message = messages.get(num);
         modelMap.put("message", message == null ? "" : message);
 
