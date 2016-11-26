@@ -15,7 +15,7 @@
 <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 <title>Affichage des messages</title>
 </head>
-<body class="body_display">
+<body  class="body_display">
 
 <%
    // response.setIntHeader("Refresh", 3);
@@ -86,7 +86,7 @@
 <div class='panel panel-info bgelement'>
 <div class='panel-heading'><h3 class='panel-title'>Listes des messages</h3>
 </div>
-<div class='panel-body'><br>
+<div class='panel-body' id="scroll_body"><br>
 <c:choose>
     <c:when test="${not empty messages}">
         <c:forEach items="${messages}" var="message">
@@ -109,6 +109,7 @@
 <div class='col-xs-12 col-md-4 col-sm-4 col-lg-4'>
 <iframe src="${pageContext.request.contextPath}/back-office/user/${salon}" name="user" style="height: 100%;"></iframe>
 </div>
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/script.js"></script>
 </body>
 </html>
