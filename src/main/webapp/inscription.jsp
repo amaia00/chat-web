@@ -49,14 +49,11 @@
 			 				 <span class="input-group-addon" id="basic-addon_pseudo"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></span>
 			  				<input type="text" class="form-control" placeholder="pseudo" name="username" aria-describedby="basic-addon_email" required="required">
 			  			</div>
-			  			
 					</div>
 
 					<a href="index.jsp" class="connex_lien">Tu est déjà inscrit? Connecte-toi </a>
-					<button type="submit"  style="float:none;width:80%;margin:0 auto;" class="btn btn-primary">S'enregistrer</button>
-				
+                    <button type="submit" class="btn btn-primary">S'enregistrer</button>
 				</form>
-			
 			</div>
 	</div>
 </body>

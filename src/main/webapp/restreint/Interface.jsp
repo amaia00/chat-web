@@ -14,7 +14,7 @@
 	<iframe src="${pageContext.request.contextPath}/back-office/${salon}" name="Affichageframe"></iframe>
 	<form action="${pageContext.request.contextPath}/Stockage" class="formmessage" method="POST">
 		<label style="margin:30px 0;">Message: </label><br/>
-	<textarea class="form-control" rows="3" name="contenu"></textarea>
+	<textarea autofocus class="form-control" rows="3" name="contenu"></textarea>
 	<div class='rg'>
 		<label>
 		<c:choose>
