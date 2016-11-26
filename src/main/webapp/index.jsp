@@ -58,7 +58,6 @@
                         </select>
                     </c:if>
                 </div>
-
                 <a href="inscription.jsp" class="connex_lien">Tu n'est pas inscrit encore? Fais vite </a>
                 <button type="submit" class="btn btn-primary">Se connecter</button>
             </form>

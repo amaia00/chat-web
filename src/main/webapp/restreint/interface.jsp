@@ -14,16 +14,17 @@
 	<iframe src="${pageContext.request.contextPath}/back-office/${salon}" name="Affichageframe"></iframe>
 	<form action="${pageContext.request.contextPath}/Stockage" class="formmessage" method="POST">
 		<label style="margin:30px 0;">Message: </label><br/>
-	<textarea autofocus class="form-control" rows="3" name="contenu"></textarea>
+	<textarea class="form-control" autofocus rows="3" name="contenu"></textarea>
 	<div class='rg'>
-		<label>
 		<c:choose>
 			<c:when test="${entre}">
+				<label>
 				<input id='r1' type='checkbox' checked name="entre" value="${entre}"/>
-					Cliquer pour envoyer les messages seulement avec la touche entrer
+				Cliquer pour envoyer les messages seulement avec la touche entrer
 				</label>
 			</c:when>
 			<c:otherwise>
+				<label>
 				<input id='r1' type='checkbox' name="entre" value=""/>
 				Cliquer pour envoyer les messages seulement avec la touche entrer
 				</label>

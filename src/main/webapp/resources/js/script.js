@@ -42,6 +42,13 @@ $(document).ready(function () {
         if (keycode == 13 && checked == 1) {
             $(".formmessage").submit();
         }
-
     });
+
+	$(window).on('load',function()
+	{
+		var contents = $('#scroll_body').height();
+		console.log(contents)
+		$(".bgelement").scrollTop(contents);
+
+	});
 });
