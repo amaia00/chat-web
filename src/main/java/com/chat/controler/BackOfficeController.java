@@ -43,12 +43,6 @@ public class BackOfficeController {
         this.gestionUtilisateur = gestionUtilisateur;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String test(Model model) {
-        model.addAttribute("salut", "SALUT!");
-        return "index";
-    }
-
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public String addUser(@RequestParam(value = "username") String pseudo,
                           @RequestParam(value = "name") String name,
@@ -98,12 +92,16 @@ public class BackOfficeController {
 
     @RequestMapping(value = "/user/{salon}", method = RequestMethod.GET)
     public String listUsers(ModelMap modelMap,
-                            @PathVariable String salon) {
-        List<User> userList = gestionMessage.getUserList(salon);
+                            @PathVariable String salon,
+                            HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute("pseudo").toString();
+
+        List<User> userList = gestionMessage.getUserList(salon, pseudo);
         modelMap.addAttribute("users", userList);
 
         return "restreint/listuser";
-
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)

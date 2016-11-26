@@ -3,6 +3,7 @@ package com.chat.modele;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -72,12 +73,16 @@ public class ChatGestionService implements GestionMessage {
 
 
     @Override
-    public List<User> getUserList(String salon){
+    public List<User> getUserList(String salon, String pseudo) {
         List<User> users = new ArrayList<>();
         map.get(salon).stream().filter(m -> m.getUser().getEtat().equals(User.Status.ONLINE))
                 .forEach(m -> users.add(m.getUser()));
 
-        return users;
+        /* On remove l'utilisateur actuel */
+        //users = users.stream().filter(u -> !u.getPseudo().equals(pseudo)).distinct().collect(Collectors.toList())   ;
+
+        /* On remove les doublés*/
+        return users.stream().filter(u -> !u.getPseudo().equals(pseudo)).distinct().collect(Collectors.toList());
     }
 
 }
