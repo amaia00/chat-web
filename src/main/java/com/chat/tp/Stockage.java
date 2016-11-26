@@ -69,6 +69,7 @@ public class Stockage extends HttpServlet {
 
 		if (message != null){
 			//AJOUTER MESSAGE SALON
+			session.setAttribute("entre", request.getParameter("entre"));
 			User user = gestionUtilisateur.getUserByPseudo(pseudo);
 			gestionMessage.addMessage(message , user, salon);
 

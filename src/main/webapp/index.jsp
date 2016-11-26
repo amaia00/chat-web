@@ -22,8 +22,6 @@
             <h2>Bienvenue sur le chat en ligne</h2>
             <form method="POST" action="${pageContext.request.contextPath}/back-office/login">
 
-
-                <!-- TODO ajouter un lieu pour montrer le message -->
                 <c:choose>
                     <c:when test="${not empty param.username}">
                         <p class="bg-success">${param.msg} <strong>${param.username}</strong></p>
@@ -34,10 +32,7 @@
                             existant cliquez sur la flêche"
                         </p>
                     </c:otherwise>
-
-
                 </c:choose>
-                <!-- ------------------ --->
 
                 <div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
                     <div class="input-group">
