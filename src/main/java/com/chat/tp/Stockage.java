@@ -69,7 +69,7 @@ public class Stockage extends HttpServlet {
 
 		if (message != null){
 			//AJOUTER MESSAGE SALON
-			User user = gestionUtilisateur.getUserByPseudo(pseudo, salon);
+			User user = gestionUtilisateur.getUserByPseudo(pseudo);
 			gestionMessage.addMessage(message , user, salon);
 
 		}

@@ -1,10 +1,11 @@
 package com.chat.modele;
 
+import com.chat.util.Constantes;
+import com.chat.util.DataException;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Amaia Nazábal
@@ -14,24 +15,36 @@ import java.util.Map;
 @Service
 public class ChatGestionUtilisateur implements GestionUtilisateur {
 
-    private Map<String, List<User>> userList = new HashMap<>();
+    private List<User> userList = new ArrayList<>();
 
     @Override
-    public void addUser(String pseudo, String prenom, String nom, String mail,
-                        String salon) {
+    public void addUser(String pseudo, String prenom, String nom, String mail) throws DataException {
         User user = new User(pseudo, prenom, nom, mail);
-        userList.get(salon).add(user);
+        if (!existsUsername(pseudo))
+            if (!existsMail(mail))
+                userList.add(user);
+            else
+                throw new DataException(Constantes.MAIL_ALREADY_EXISTS);
+        else
+            throw new DataException(Constantes.USERNAME_ALREADY_EXISTS);
     }
 
     @Override
-    public boolean existsUser(String pseudo, String salon) {
-        return userList.get(salon).stream().filter(u -> u.getPseudo().equals(pseudo))
+    public boolean existsMail(String mail) {
+
+        return userList.stream().filter(u -> u.getMail().equals(mail))
                 .findFirst().isPresent();
     }
 
     @Override
-    public User getUserByPseudo(String pseudo, String salon) {
-        return userList.get(salon).stream().filter(u -> u.getPseudo().equals(pseudo))
+    public boolean existsUsername(String pseudo) {
+        return userList.stream().filter(u -> u.getPseudo().equals(pseudo))
+                .findFirst().isPresent();
+    }
+
+    @Override
+    public User getUserByPseudo(String pseudo) {
+        return userList.stream().filter(u -> u.getPseudo().equals(pseudo))
                 .findFirst().orElse(null);
     }
 }

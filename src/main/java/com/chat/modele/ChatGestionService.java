@@ -52,13 +52,6 @@ public class ChatGestionService implements GestionMessage {
         }
     }
 
-
-    /**
-     * Cette méthode permet de récuperer le nombre de message d'un salon
-     *
-     * @param salon le nom du salon
-     * @return
-     */
     @Override
     public int nombreMessage(String salon) {
         if (map.containsKey(salon)) {
@@ -68,15 +61,23 @@ public class ChatGestionService implements GestionMessage {
         }
     }
 
-    @Override
     public Map<String, List<Message>> getMap() {
         return map;
     }
 
 
-    @Override
     public void setMap(Map<String, List<Message>> map) {
         this.map = map;
+    }
+
+
+    @Override
+    public List<User> getUserList(String salon){
+        List<User> users = new ArrayList<>();
+        map.get(salon).stream().filter(m -> m.getUser().getEtat().equals(User.Status.ONLINE))
+                .forEach(m -> users.add(m.getUser()));
+
+        return users;
     }
 
 }

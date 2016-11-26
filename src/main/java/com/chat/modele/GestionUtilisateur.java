@@ -1,5 +1,7 @@
 package com.chat.modele;
 
+import com.chat.util.DataException;
+
 /**
  * @author Amaia Nazábal
  * @version 1.0
@@ -14,19 +16,27 @@ public interface GestionUtilisateur {
      * @param prenom le prenom de l'utilisateur
      * @param nom    le nom de l'utilisateur
      * @param mail   le mail de l'utilisateur
-     * @param salon  le salon du chat
      */
-    void addUser(String pseudo, String prenom, String nom, String mail, String salon);
+    void addUser(String pseudo, String prenom, String nom, String mail) throws DataException;
+
 
     /**
      * Cette méthode évalue l'existance de l'utilisateur
-     * dans la liste
+     * dans la liste avec ce mail
      *
-     * @param pseudo l'entité de l'utilisateur
-     * @param salon  le salon du chat
-     * @return true si l'utilisateur est déjà inscrit
+     * @param mail le mail de l'utilisateur
+     * @return true si le mail déjà exists
      */
-    boolean existsUser(String pseudo, String salon);
+    boolean existsMail(String mail);
+
+    /**
+     * Cette méthode évalue l'existance de l'utilisateur
+     * dans la liste avec ce pseudo
+     *
+     * @param pseudo le pseudo de l'utilisateur
+     * @return true si le pseudo déjà exists
+     */
+    boolean existsUsername(String pseudo);
 
 
     /**
@@ -35,8 +45,7 @@ public interface GestionUtilisateur {
      * le salon indiqués
      *
      * @param pseudo le pseudo de l'utilisateur
-     * @param salon  le salon du chat
      * @return l'entite de l'utilisateur
      */
-    User getUserByPseudo(String pseudo, String salon);
+    User getUserByPseudo(String pseudo);
 }

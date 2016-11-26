@@ -6,16 +6,26 @@ package com.chat.modele;
  * @since 1.0 11/23/16.
  */
 public class User {
+    public enum Status {ONLINE, OFFLINE};
     private String pseudo;
     private String prenom;
     private String nom;
     private String mail;
+    private Status etat;
 
     public User(String pseudo, String prenom, String nom, String mail) {
         this.pseudo = pseudo;
         this.prenom = prenom;
         this.nom = nom;
         this.mail = mail;
+    }
+
+    public Status getEtat() {
+        return etat;
+    }
+
+    public void setEtat(Status etat) {
+        this.etat = etat;
     }
 
     public String getPseudo() {

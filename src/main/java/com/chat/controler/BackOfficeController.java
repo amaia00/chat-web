@@ -3,6 +3,9 @@ package com.chat.controler;
 import com.chat.modele.GestionMessage;
 import com.chat.modele.GestionUtilisateur;
 import com.chat.modele.Message;
+import com.chat.modele.User;
+import com.chat.util.Constantes;
+import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,7 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Amaia Nazábal
@@ -24,6 +30,7 @@ import java.util.List;
 @RequestMapping("/")
 public class BackOfficeController {
 
+    private static final Logger LOGGER = Logger.getLogger(BackOfficeController.class.getName());
 
     private GestionMessage gestionMessage;
 
@@ -47,12 +54,26 @@ public class BackOfficeController {
                           @RequestParam(value = "name") String name,
                           @RequestParam(value = "lastName") String lastName,
                           @RequestParam(value = "mail") String mail,
-                          HttpServletRequest request,
                           Model model) {
-        gestionUtilisateur.addUser(pseudo, name, lastName, mail, request.getAttribute("salon").toString());
 
-        return "index";
+        try {
+            gestionUtilisateur.addUser(pseudo, name, lastName, mail);
+
+            model.addAttribute("msg", Constantes.CORRECT_INSCRIPTION);
+            model.addAttribute("username", pseudo);
+            return "redirect:/index.jsp";
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+
+            model.addAttribute("name", name);
+            model.addAttribute("lastName", lastName);
+            model.addAttribute("msg", e.getMessage());
+
+            return "redirect:/inscription.jsp";
+        }
+
     }
+
 
     @RequestMapping(value = "/{salon}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap, @PathVariable String salon) {
@@ -73,6 +94,49 @@ public class BackOfficeController {
         modelMap.put("message", message == null ? "" : message);
 
         return "restreint/affichage";
+    }
+
+    /* TODO voir dans quelle page on va montrer */
+    @RequestMapping(value = "/user/{salon}", method = RequestMethod.GET)
+    public String listUsers(ModelMap modelMap,
+                            @PathVariable String salon) {
+        List<User> userList = gestionMessage.getUserList(salon);
+        modelMap.addAttribute("users", userList);
+
+        return "restreint/affichage";
+
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String connect(@RequestParam(value = "username") String pseudo,
+                          @RequestParam(value = "channel") String salon,
+                          HttpServletRequest request,
+                          Model model) {
+
+        if (!gestionUtilisateur.existsUsername(pseudo)) {
+            model.addAttribute("msg", Constantes.USER_NOT_EXISTS);
+            return "redirect:/inscription.jsp";
+        }
+
+        HttpSession session = request.getSession();
+        session.setAttribute("pseudo", pseudo);
+        session.setAttribute("salon", salon);
+
+        gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.ONLINE);
+
+        return "restreint/interface";
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+
+        String pseudo = session.getAttribute("pseudo").toString();
+        gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
+        session.invalidate();
+
+
+        return "redirect:/index.jsp";
     }
 
 }

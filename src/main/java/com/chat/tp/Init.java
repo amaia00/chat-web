@@ -23,7 +23,6 @@ public class Init extends HttpServlet {
     private static final String CHANNEL = "salon";
     private static final String TRUE = "true";
 
-
 	private String pseudo;
     /**
      * @see HttpServlet#HttpServlet()
@@ -39,9 +38,15 @@ public class Init extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String deconnexion = request.getParameter("deco");
 		HttpSession session = request.getSession();
-		
+
 		if(deconnexion != null && deconnexion.equals(TRUE)){
 			session.invalidate();
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/index.jsp");
+            try {
+                dispatcher.forward(request, response);
+            }catch (Exception e){
+                LOGGER.log(Level.FINE, e.getMessage(), e);
+            }
 		}
 
 		pseudo = session.getAttribute(USERNAME).toString();
@@ -84,6 +89,9 @@ public class Init extends HttpServlet {
         else {
 		
 			try {
+
+
+
 				/* Mise en session d'une chaîne de caractères */
 				session.setAttribute(USERNAME, pseudo );
 				session.setAttribute("salon", salon);
@@ -95,7 +103,7 @@ public class Init extends HttpServlet {
                 LOGGER.log(Level.FINE, e.getMessage(), e);
 			}
 			
-	    }
+	}
 	}
 }
 	

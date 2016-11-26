@@ -1,7 +1,6 @@
 package com.chat.modele;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Sofia Faddi
@@ -50,8 +49,11 @@ public interface GestionMessage {
      */
     int nombreMessage(String salon);
 
-    Map<String, List<Message>> getMap();
 
-    void setMap(Map<String, List<Message>> map);
+    /**
+     * @param salon le nom du salon
+     * @return la liste d'utilisateurs connectés dans ce salon
+     */
+    List<User> getUserList(String salon);
 
 }

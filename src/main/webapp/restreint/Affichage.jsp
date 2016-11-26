@@ -82,14 +82,14 @@
 %>
 
 <div class='panel panel-info'>
-    <div class='panel-heading'><h3 class='panel-title'>Listes des messages</h3>
+    <div class='panel-heading'><h3 class='panel-title'>Listes des messages dans le salon ${salon}</h3>
     </div>
     <div class='panel-body'><br>
         <c:choose>
             <c:when test="${not empty messages}">
                 <c:forEach items="${messages}" var="message">
                     <div class='block_message'>
-                        <h4 class='user_user'><i class='glyphicon glyphicon-user'></i> ${message.user} a dit :</h4>
+                        <h4 class='user_user'><i class='glyphicon glyphicon-user'></i> ${message.user.pseudo} a dit :</h4>
                         <h5 class='message_user'>${message.contenu}</h5>
                         <div class='date_user'>${message.date}</div>
                     </div>
