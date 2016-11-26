@@ -20,12 +20,13 @@
     <div class="all-users  bgelement">
         <div class ="panel-info">
             <div class='panel-heading'>
-                <h3 class='panel-title'>Listes d'autres utilisateurs connectés</h3>
+                <h3 class='panel-title'>Listes d'utilisateurs dans ce salon</h3>
             </div>
             <ul>
             <c:forEach items="${users}" var="user">
                 <li>
-                <span class="glyphicon glyphicon-user" aria-hidden="true"></span> ${user.pseudo}
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                ${user.pseudo}
                 </li>
             </c:forEach>
             </ul>

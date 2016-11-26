@@ -4,7 +4,7 @@ import com.chat.modele.GestionMessage;
 import com.chat.modele.GestionUtilisateur;
 import com.chat.modele.Message;
 import com.chat.modele.User;
-`import com.chat.tp.Init;
+import com.chat.tp.Init;
 import com.chat.util.Constantes;
 import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -162,10 +162,10 @@ public class BackOfficeController {
      * @return à la vue d'interface
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String connect(@RequestParam(value = "username") String pseudo,
-                          @RequestParam(value = "channel") String salon,
-                          HttpServletRequest request,
-                          Model model) {
+    public String login(@RequestParam(value = "username") String pseudo,
+                        @RequestParam(value = "channel") String salon,
+                        HttpServletRequest request,
+                        Model model) {
 
         if (!gestionUtilisateur.existsUsername(pseudo)) {
             model.addAttribute("msg", Constantes.USER_NOT_EXISTS);
@@ -179,7 +179,7 @@ public class BackOfficeController {
         gestionMessage.addUserToSalon(pseudo,salon);
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.ONLINE);
 
-        return "restreint/interface";
+        return "redirect:/restreint/interface.jsp";
     }
 
     /**

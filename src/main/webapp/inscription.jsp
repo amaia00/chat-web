@@ -51,6 +51,8 @@
 			  			</div>
 			  			
 					</div>
+
+					<a href="index.jsp" class="connex_lien">Tu est déjà inscrit? Connecte-toi </a>
 					<button type="submit"  style="float:none;width:80%;margin:0 auto;" class="btn btn-primary">S'enregistrer</button>
 				
 				</form>

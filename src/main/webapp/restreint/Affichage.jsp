@@ -30,8 +30,6 @@
     int nbMessClient;
     int nbMessServeur;
 
-    //gestion.ajouterMessage(new Message("Bob", "test")); //test
-
     //teste de l'existence du cookie, création si nécessaire
     if (tmpCookie == null) {
 

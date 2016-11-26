@@ -7,16 +7,16 @@ package com.chat.util;
  */
 public class Constantes {
 
-    public static final String CORRECT_INSCRIPTION = "Votre inscription s'e realise correctement." +
+    public static final String CORRECT_INSCRIPTION = "Ton inscription s'es realise correctement." +
             "Entrez avec votre pseudo.";
 
-    public static final String USER_NOT_EXISTS = "Vous n'etes pas encore inscrit.";
+    public static final String USER_NOT_EXISTS = "Tu n'es pas encore inscrit.";
 
-    public static final String USERNAME_ALREADY_EXISTS = "Le pseudo que vous essaies d'utiliser est deja registre";
+    public static final String USERNAME_ALREADY_EXISTS = "Le pseudo que t'essaies d'utiliser est deja registre";
 
-    public static final String MAIL_ALREADY_EXISTS = "Le mail que vous essaies d'utiliser est deja registre";
+    public static final String MAIL_ALREADY_EXISTS = "Le mail que t'essaies d'utiliser est deja registre";
 
     private Constantes(){
-        /* On cache le constructeur parce que c'est une classe utilitaire*/
+        /* On cache le constructeur parce que c'est une classe utilitaire */
     }
 }

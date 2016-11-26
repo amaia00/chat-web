@@ -9,8 +9,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
 
+<%
 
 out.println("<HTML>\n<BODY>---Liste des salons: <br><br>"); 
 
