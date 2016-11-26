@@ -22,7 +22,7 @@
 					<p>Inscrivez vous en remplissons ce formulaire </p>
 
 					<!-- TODO ajouter un lieu pour montrer le message -->
-					<p>${param.msg}</p>
+					<p class="bg-danger">${param.msg}</p>
 					<!-- ------------------ --->
 
 					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">

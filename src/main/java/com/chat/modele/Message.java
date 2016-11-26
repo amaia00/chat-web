@@ -1,6 +1,8 @@
 package com.chat.modele;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.text.DateFormat;
 
 public class Message {
 
@@ -40,8 +42,16 @@ public class Message {
 
 	@Override
 	public String toString() {
-		return user+": "+ contenu +"  ----" + date.toString()+"\n";
+		return user + ": " + contenu + "  ----" + date.toString() + "\n";
 	}
-	
 
+
+	public String getHourFormatted() {
+		DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		DateFormat formatter1 = new SimpleDateFormat("dd/mm/yy");
+
+		String hour = formatter.format(this.date);
+		String day = formatter1.format(this.date);
+		return "Envoyé le "+day+" à "+hour;
+	}
 }

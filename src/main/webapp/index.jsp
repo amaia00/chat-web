@@ -20,13 +20,13 @@
         <div class="col-xs-12 col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-lg-offset-2 col-lg-8">
             <div class="image_accueil"><img alt="Image de bienvenue" src="resources/images/chatimage.png"></div>
             <h2>Bienvenue sur le chat en ligne</h2>
-            <form method="POST" action="back-office/login">
+            <form method="POST" action="${pageContext.request.contextPath}/back-office/login">
 
 
                 <!-- TODO ajouter un lieu pour montrer le message -->
                 <c:choose>
                     <c:when test="${not empty param.username}">
-                        <p>${param.msg} ${param.username}</p>
+                        <p class="bg-success">${param.msg} <strong>${param.username}</strong></p>
                     </c:when>
                     <c:otherwise>
                         <p>
@@ -65,7 +65,7 @@
                 </div>
 
                 <!-- TODO: enlever apres -->
-                <a href="inscription.jsp">Tu n'est pas inscrit ecore?</a>
+                <a href="inscription.jsp" class="connex_lien">Tu n'est pas inscrit encore? Fais vite </a>
 
                 <button type="submit" class="btn btn-primary">Se connecter</button>
             </form>

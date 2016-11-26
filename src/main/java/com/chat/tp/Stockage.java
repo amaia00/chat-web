@@ -29,18 +29,18 @@ public class Stockage extends HttpServlet {
 	private static final Logger LOGGER = Logger.getLogger(Message.class.getName());
 
 
-    @Autowired
-    public GestionMessage gestionMessage;
+	@Autowired
+	public GestionMessage gestionMessage;
 
 	@Autowired
 	public GestionUtilisateur gestionUtilisateur;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public Stockage() {
-        super();
-    }
+	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public Stockage() {
+		super();
+	}
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -84,9 +84,9 @@ public class Stockage extends HttpServlet {
 	}
 
 	@Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                config.getServletContext());
-    }
+	public void init(ServletConfig config) throws ServletException {
+		super.init(config);
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+				config.getServletContext());
+	}
 }

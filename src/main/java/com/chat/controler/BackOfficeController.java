@@ -96,14 +96,13 @@ public class BackOfficeController {
         return "restreint/affichage";
     }
 
-    /* TODO voir dans quelle page on va montrer */
     @RequestMapping(value = "/user/{salon}", method = RequestMethod.GET)
     public String listUsers(ModelMap modelMap,
                             @PathVariable String salon) {
         List<User> userList = gestionMessage.getUserList(salon);
         modelMap.addAttribute("users", userList);
 
-        return "restreint/affichage";
+        return "restreint/listuser";
 
     }
 
@@ -113,6 +112,7 @@ public class BackOfficeController {
                           HttpServletRequest request,
                           Model model) {
 
+
         if (!gestionUtilisateur.existsUsername(pseudo)) {
             model.addAttribute("msg", Constantes.USER_NOT_EXISTS);
             return "redirect:/inscription.jsp";
@@ -121,6 +121,7 @@ public class BackOfficeController {
         HttpSession session = request.getSession();
         session.setAttribute("pseudo", pseudo);
         session.setAttribute("salon", salon);
+        System.out.print("ok1");
 
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.ONLINE);
 

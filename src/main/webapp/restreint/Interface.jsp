@@ -14,6 +14,8 @@
 	<form action="${pageContext.request.contextPath}/Stockage" class="formmessage" method="POST">
 		<label style="margin:30px 0;">Message: </label><br/>
 	<textarea class="form-control" rows="3" name="contenu"></textarea>
+	<div class='rg'><input id='r1' type='radio' name="asdf" value="ischecked"/><label> Cliquer pour envoyer les messages seulement avec la touche entrer</label>
+	</div>
 		<input type="submit" class="btn btn-primary" value="envoyer">
 	</form>
 
@@ -21,5 +23,7 @@
     <!--  Bouton se déconnecter avec le parametre name deco  -->
 	<a data-method="get" class='btn btn-success' href="${pageContext.request.contextPath}/back-office/logout" data-parameter-name="deco" data-parameter-value="true">Déconnexion</a>
 </div>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/script.js"></script>
 </body>
 </html>
