@@ -4,6 +4,7 @@ import com.chat.modele.GestionMessage;
 import com.chat.modele.GestionUtilisateur;
 import com.chat.modele.Message;
 import com.chat.modele.User;
+import com.chat.tp.Init;
 import com.chat.util.Constantes;
 import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,13 @@ public class BackOfficeController {
 
     private GestionUtilisateur gestionUtilisateur;
 
+    /**
+     *
+     * Constructeur pour l'instantiation des classes
+     *
+     * @param gestionMessage l'instance de la gestion de messages
+     * @param gestionUtilisateur l'instance de la gestion d'utilisateurs
+     */
     @Autowired
     public BackOfficeController(GestionMessage gestionMessage,
                                 GestionUtilisateur gestionUtilisateur) {
@@ -43,12 +51,17 @@ public class BackOfficeController {
         this.gestionUtilisateur = gestionUtilisateur;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String test(Model model) {
-        model.addAttribute("salut", "SALUT!");
-        return "index";
-    }
-
+    /**
+     *
+     * Cette méthode inscrit un nouveau utilisateur
+     *
+     * @param pseudo le pseudo de l'utilisateur
+     * @param name le prenom de l'utilisateur
+     * @param lastName le nom de l'utilisateur
+     * @param mail le mail de l'utilisateur
+     * @param model le modele
+     * @return à la vue initiale
+     */
     @RequestMapping(value = "/user", method = RequestMethod.POST)
     public String addUser(@RequestParam(value = "username") String pseudo,
                           @RequestParam(value = "name") String name,
@@ -62,6 +75,7 @@ public class BackOfficeController {
             model.addAttribute("msg", Constantes.CORRECT_INSCRIPTION);
             model.addAttribute("username", pseudo);
             return "redirect:/index.jsp";
+
         } catch (DataException e) {
             LOGGER.log(Level.FINE, e.getMessage(), e);
 
@@ -74,7 +88,14 @@ public class BackOfficeController {
 
     }
 
-
+    /**
+     *
+     * Cette méthode retourne la liste des messages du salon
+     *
+     * @param modelMap le modele
+     * @param salon le salon auquel l'utilisateur est connecté
+     * @return à la page d'affichage
+     */
     @RequestMapping(value = "/{salon}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap, @PathVariable String salon) {
 
@@ -84,6 +105,16 @@ public class BackOfficeController {
         return "restreint/affichage";
     }
 
+    /**
+     *
+     * Cette méthode retorune le contenu du messages selon le
+     * salon et le nombre du message
+     *
+     * @param modelMap le modele
+     * @param salon le salon auquel l'utilisateur est connecté
+     * @param num le nombre de messages
+     * @return à la page d'affichage
+     */
     @RequestMapping(value = "/{salon}/{num}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap,
                                @PathVariable String salon,
@@ -96,22 +127,45 @@ public class BackOfficeController {
         return "restreint/affichage";
     }
 
+    /**
+     *
+     * Cette méthode retorune la liste d'utilisateurs pour salon
+     *
+     * @param modelMap le modele
+     * @param salon le salon auquel l'utilisateur est connecté
+     * @param request la rêquete
+     * @return à la vue d'utilisateurs
+     */
     @RequestMapping(value = "/user/{salon}", method = RequestMethod.GET)
     public String listUsers(ModelMap modelMap,
-                            @PathVariable String salon) {
-        List<User> userList = gestionMessage.getUserList(salon);
+                            @PathVariable String salon,
+                            HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        String pseudo = session.getAttribute(Init.USERNAME).toString();
+
+        List<User> userList = gestionMessage.getUserList(salon, pseudo);
         modelMap.addAttribute("users", userList);
 
         return "restreint/listuser";
-
     }
 
+    /**
+     *
+     * Cette méthode ajoute l'utilisateurs au salon et le mets
+     * dans l'etat ONLINE
+     *
+     * @param pseudo le pseudo de l'utilisateur
+     * @param salon le salon auquel l'utilisateur est connecté
+     * @param request la rêquete
+     * @param model le modele
+     * @return à la vue d'interface
+     */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String connect(@RequestParam(value = "username") String pseudo,
-                          @RequestParam(value = "channel") String salon,
-                          HttpServletRequest request,
-                          Model model) {
-
+    public String login(@RequestParam(value = "username") String pseudo,
+                        @RequestParam(value = "channel") String salon,
+                        HttpServletRequest request,
+                        Model model) {
 
         if (!gestionUtilisateur.existsUsername(pseudo)) {
             model.addAttribute("msg", Constantes.USER_NOT_EXISTS);
@@ -119,20 +173,28 @@ public class BackOfficeController {
         }
 
         HttpSession session = request.getSession();
-        session.setAttribute("pseudo", pseudo);
-        session.setAttribute("salon", salon);
-        System.out.print("ok1");
+        session.setAttribute(Init.USERNAME, pseudo);
+        session.setAttribute(Init.CHANNEL, salon);
 
+        gestionMessage.addUserToSalon(pseudo,salon);
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.ONLINE);
 
-        return "restreint/interface";
+        return "redirect:/restreint/interface.jsp";
     }
 
+    /**
+     *
+     * Cette méthode fait la déconnexion de la page et mets l'utilisateur
+     * au OFFLINE
+     *
+     * @param request la rêquete
+     * @return à la page initiale
+     */
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        String pseudo = session.getAttribute("pseudo").toString();
+        String pseudo = session.getAttribute(Init.USERNAME).toString();
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
         session.invalidate();
 

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html5">
@@ -13,8 +14,22 @@
 	<iframe src="${pageContext.request.contextPath}/back-office/${salon}" name="Affichageframe"></iframe>
 	<form action="${pageContext.request.contextPath}/Stockage" class="formmessage" method="POST">
 		<label style="margin:30px 0;">Message: </label><br/>
-	<textarea class="form-control" rows="3" name="contenu"></textarea>
-	<div class='rg'><input id='r1' type='radio' name="asdf" value="ischecked"/><label> Cliquer pour envoyer les messages seulement avec la touche entrer</label>
+	<textarea class="form-control" autofocus rows="3" name="contenu"></textarea>
+	<div class='rg'>
+		<c:choose>
+			<c:when test="${entre}">
+				<label>
+				<input id='r1' type='checkbox' checked name="entre" value="${entre}"/>
+				Cliquer pour envoyer les messages seulement avec la touche entrer
+				</label>
+			</c:when>
+			<c:otherwise>
+				<label>
+				<input id='r1' type='checkbox' name="entre" value=""/>
+				Cliquer pour envoyer les messages seulement avec la touche entrer
+				</label>
+			</c:otherwise>
+		</c:choose>
 	</div>
 		<input type="submit" class="btn btn-primary" value="envoyer">
 	</form>

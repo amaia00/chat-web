@@ -52,8 +52,17 @@ public interface GestionMessage {
 
     /**
      * @param salon le nom du salon
+     * @param pseudo le pseudo de l'utilisateur actuel
      * @return la liste d'utilisateurs connectés dans ce salon
      */
-    List<User> getUserList(String salon);
+    List<User> getUserList(String salon, String pseudo);
 
+    /**
+     * Cette méthode ajoute un utilisateurs à la
+     * liste d'utilisateurs connectés
+     *
+     * @param pseudo pseduo
+     * @param salon salon
+     */
+    void addUserToSalon(String pseudo, String salon);
 }

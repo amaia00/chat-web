@@ -1,5 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="com.chat.util.Utilitaire" %>
 <jsp:useBean id="gestion" scope="application"
              class="com.chat.modele.ChatGestionService"/>
 <jsp:useBean id="util" scope="application"
@@ -11,42 +10,27 @@
 <head>
 <!-- Encodage CSS BOOSTRAP et personalisé -->
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Refresh" content="5">
 <link href="${pageContext.request.contextPath}/resources/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/resources/css/style.css" rel="stylesheet">
 <title>Affichage des messages</title>
 </head>
 <body class="body_display">
 
-<%
-    //response.setIntHeader("Refresh", 3);
-    String salon = (String) session.getAttribute("salon");
-%>
-
-
-
-<div class="all-users  bgelement"> <div class ="panel-info"><div class='panel-heading'>
-<h3 class='panel-title'>Listes des messages</h3>
+<div class="all-users  bgelement">
+<div class ="panel-info">
+<div class='panel-heading'>
+<h3 class='panel-title'>Listes d'utilisateurs dans ce salon</h3>
 </div>
 <ul>
-<li>
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span> user1
-</li>
-<li>
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span> user1
-</li>
-<li>
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span> user1
-</li>
-<li>
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span> user1
-</li>
-<li>
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span> user1
-</li>
-<li>
-<span class="glyphicon glyphicon-user" aria-hidden="true"></span> user1
-</li>
-
+<c:forEach items="${users}" var="user">
+    <li>
+    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+    ${user.pseudo}
+    </li>
+</c:forEach>
 </ul>
 </div>
 </div>
+</body>
+</html>

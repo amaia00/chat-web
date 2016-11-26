@@ -19,11 +19,10 @@ import java.util.logging.Logger;
 public class Init extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     private static final Logger LOGGER = Logger.getLogger(Init.class.getName());
-    private static final String USERNAME = "pseudo";
-    private static final String CHANNEL = "salon";
+    public static final String USERNAME = "pseudo";
+    public static final String CHANNEL = "salon";
     private static final String TRUE = "true";
 
-	private String pseudo;
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -49,7 +48,7 @@ public class Init extends HttpServlet {
             }
 		}
 
-		pseudo = session.getAttribute(USERNAME).toString();
+		String pseudo = session.getAttribute(USERNAME).toString();
 		if ( pseudo == null ) {
 
 			/* Redirection vers la page publique */
@@ -76,7 +75,7 @@ public class Init extends HttpServlet {
 		HttpSession session = request.getSession();
 		// recupérer le pseudo et le salon depuis le formulaire index
         String salon = request.getParameter(CHANNEL);
-        pseudo = request.getParameter(USERNAME);
+        String pseudo = request.getParameter(USERNAME);
 
         // si null redirection vers la page index.jsp
         if (pseudo == null|| session == null || salon == null) {
@@ -89,9 +88,6 @@ public class Init extends HttpServlet {
         else {
 		
 			try {
-
-
-
 				/* Mise en session d'une chaîne de caractères */
 				session.setAttribute(USERNAME, pseudo );
 				session.setAttribute("salon", salon);

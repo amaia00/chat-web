@@ -11,7 +11,6 @@
 <body>
 <%
 
-
 out.println("<HTML>\n<BODY>---Liste des salons: <br><br>"); 
 
 for (String mapKey : gestion.getMap().keySet() ) {

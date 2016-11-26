@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -21,9 +22,9 @@
 				<form method ="POST" action="back-office/user">
 					<p>Inscrivez vous en remplissons ce formulaire </p>
 
-					<!-- TODO ajouter un lieu pour montrer le message -->
-					<p class="bg-danger">${param.msg}</p>
-					<!-- ------------------ --->
+					<c:if test="${not empty param.msg}">
+						<p class="bg-danger">${param.msg}</p>
+					</c:if>
 
 					<div class="col-xs-12 col-md-6 col-sm-6 col-lg-6">
 						<div class="input-group">
@@ -50,10 +51,10 @@
 			  			</div>
 			  			
 					</div>
-					<button type="submit"  style="float:none;width:80%;margin:0 auto;" class="btn btn-primary">S'enregistrer</button>
-				
+
+					<a href="index.jsp" class="connex_lien">Tu est déjà inscrit? Connecte-toi </a>
+                    <button type="submit" class="btn btn-primary">S'enregistrer</button>
 				</form>
-			
 			</div>
 	</div>
 </body>

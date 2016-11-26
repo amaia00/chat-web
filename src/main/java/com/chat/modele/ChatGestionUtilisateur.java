@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ *
+ * Cette classe garde toutes les méthodes sur l'inscription d'utilisateurs
+ *
  * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 11/23/16.

@@ -4,6 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.DateFormat;
 
+/**
+ * @author Sophiaa Fadi
+ * @version 1.0
+ *
+ */
 public class Message {
 
 	private String contenu;
