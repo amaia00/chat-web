@@ -57,4 +57,12 @@ public interface GestionMessage {
      */
     List<User> getUserList(String salon, String pseudo);
 
+    /**
+     * Cette méthode ajoute un utilisateurs à la
+     * liste d'utilisateurs connectés
+     *
+     * @param pseudo pseduo
+     * @param salon salon
+     */
+    void addUserToSalon(String pseudo, String salon);
 }

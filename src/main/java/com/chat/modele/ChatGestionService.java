@@ -1,11 +1,13 @@
 package com.chat.modele;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
+ *
+ * Cette classe garde tous les fonctions sur le salon et les messages
  *
  * @author Sofia Faddi
  * @author Amaia Nazábal
@@ -15,6 +17,10 @@ import java.util.stream.Collectors;
 public class ChatGestionService implements GestionMessage {
 
     private Map<String, List<Message>> map = new HashMap<>();
+    private Map<String, List<User>> userPerSalon = new HashMap<>();
+
+    @Autowired
+    private GestionUtilisateur gestionUtilisateur;
 
     @Override
     public void addMessage(String contenu, User user, String salon) {
@@ -74,15 +80,29 @@ public class ChatGestionService implements GestionMessage {
 
     @Override
     public List<User> getUserList(String salon, String pseudo) {
-        List<User> users = new ArrayList<>();
-        map.get(salon).stream().filter(m -> m.getUser().getEtat().equals(User.Status.ONLINE))
-                .forEach(m -> users.add(m.getUser()));
+        List<User> userList = this.userPerSalon.get(salon);
 
-        /* On remove l'utilisateur actuel */
-        //users = users.stream().filter(u -> !u.getPseudo().equals(pseudo)).distinct().collect(Collectors.toList())   ;
-
-        /* On remove les doublés*/
-        return users.stream().filter(u -> !u.getPseudo().equals(pseudo)).distinct().collect(Collectors.toList());
+        if(userList != null){
+            return userList;
+        }else{
+            return new ArrayList<>();
+        }
     }
 
+    @Override
+    public void addUserToSalon(String pseudo, String salon){
+        List<User> userList = this.userPerSalon.get(salon);
+
+        if(userList == null){
+            userList = new ArrayList<>();
+            this.userPerSalon.put(salon,userList);
+        }
+
+        /* On contrôle que l'utilisateur n'existe pas déjà dans la liste */
+        if (!userList.stream().filter(u -> u.getPseudo().equals(pseudo))
+                .findFirst().isPresent()) {
+            User user = gestionUtilisateur.getUserByPseudo(pseudo);
+            userList.add(user);
+        }
+    }
 }

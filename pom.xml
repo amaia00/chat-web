@@ -5,7 +5,7 @@
     <artifactId>TPChat1</artifactId>
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
-    <name>TPChat1 Maven Webapp</name>
+    <name>TPChat</name>
     <url>http://maven.apache.org</url>
     <properties>
         <spring.webmvc>4.0.2.RELEASE</spring.webmvc>
