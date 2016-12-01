@@ -6,7 +6,8 @@ package com.chat.modele;
  * @since 1.0 11/23/16.
  */
 public class User {
-    public enum Status {ONLINE, OFFLINE};
+    public enum Status {ONLINE, OFFLINE}
+    
     private String pseudo;
     private String prenom;
     private String nom;

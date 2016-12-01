@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.chat.util.Utilitaire" %>
 <jsp:useBean id="gestion" scope="application"
-             class="com.chat.modele.ChatGestionService"/>
+             class="com.chat.service.ChatMessageService"/>
 <jsp:useBean id="util" scope="application"
              class="com.chat.util.Utilitaire"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"

@@ -1,5 +1,6 @@
-package com.chat.modele;
+package com.chat.service;
 
+import com.chat.modele.User;
 import com.chat.util.DataException;
 
 /**

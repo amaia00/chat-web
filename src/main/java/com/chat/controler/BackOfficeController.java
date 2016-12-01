@@ -1,7 +1,6 @@
 package com.chat.controler;
 
-import com.chat.modele.GestionMessage;
-import com.chat.modele.GestionUtilisateur;
+import com.chat.service.*;
 import com.chat.modele.Message;
 import com.chat.modele.User;
 import com.chat.tp.Init;
@@ -37,18 +36,23 @@ public class BackOfficeController {
 
     private GestionUtilisateur gestionUtilisateur;
 
+    private GestionSalon gestionSalon;
+
     /**
      *
      * Constructeur pour l'instantiation des classes
      *
      * @param gestionMessage l'instance de la gestion de messages
      * @param gestionUtilisateur l'instance de la gestion d'utilisateurs
+     * @param gestionSalon       l'instance de la gestions des salons
      */
     @Autowired
     public BackOfficeController(GestionMessage gestionMessage,
-                                GestionUtilisateur gestionUtilisateur) {
+                                GestionUtilisateur gestionUtilisateur,
+                                GestionSalon gestionSalon) {
         this.gestionMessage = gestionMessage;
         this.gestionUtilisateur = gestionUtilisateur;
+        this.gestionSalon = gestionSalon;
     }
 
     /**
@@ -99,7 +103,13 @@ public class BackOfficeController {
     @RequestMapping(value = "/{salon}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap, @PathVariable String salon) {
 
-        List<Message> messages = gestionMessage.getMessages(salon);
+        List<Message> messages = null;
+        try {
+            messages = gestionMessage.getMessages(salon);
+        } catch (DataException e) {
+            /* TODO tratar los encabezados a retornar cuando hay error */
+            LOGGER.log(Level.OFF, e.getMessage(), e);
+        }
         modelMap.put("messages", messages);
 
         return "restreint/affichage";
@@ -120,9 +130,16 @@ public class BackOfficeController {
                                @PathVariable String salon,
                                @PathVariable Integer num) {
 
-        List<Message> messages = gestionMessage.getMessages(salon);
-        Message message = messages.get(num);
-        modelMap.put("message", message == null ? "" : message);
+        List<Message> messages = null;
+        try {
+            messages = gestionMessage.getMessages(salon);
+
+            Message message = messages.get(num);
+            modelMap.put("message", message == null ? "" : message);
+        } catch (DataException e) {
+            /* TODO tratar los encabezados a retornar cuando hay error */
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
 
         return "restreint/affichage";
     }
@@ -176,7 +193,14 @@ public class BackOfficeController {
         session.setAttribute(Init.USERNAME, pseudo);
         session.setAttribute(Init.CHANNEL, salon);
 
-        gestionMessage.addUserToSalon(pseudo,salon);
+        try {
+            gestionSalon.addSalon(salon);
+            gestionMessage.addUserToSalon(pseudo,salon);
+        } catch (DataException e) {
+            /* TODO tratar los encabezados a retornar cuando hay error */
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
+
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.ONLINE);
 
         return "redirect:/restreint/interface.jsp";
@@ -195,7 +219,10 @@ public class BackOfficeController {
         HttpSession session = request.getSession();
 
         String pseudo = session.getAttribute(Init.USERNAME).toString();
+        String salon = session.getAttribute(Init.CHANNEL).toString();
+
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
+        gestionMessage.removeUserToSalon(pseudo, salon);
         session.invalidate();
 
 

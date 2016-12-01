@@ -1,5 +1,6 @@
-package com.chat.modele;
+package com.chat.service;
 
+import com.chat.modele.User;
 import com.chat.util.Constantes;
 import com.chat.util.DataException;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,7 @@ import java.util.List;
  * @since 1.0 11/23/16.
  */
 @Service
-public class ChatGestionUtilisateur implements GestionUtilisateur {
+public class ChatUtilisateurService implements GestionUtilisateur {
 
     private List<User> userList = new ArrayList<>();
 

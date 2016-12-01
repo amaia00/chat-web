@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:useBean id="gm" scope="application"
-             class="com.chat.modele.ChatGestionService"/>
+             class="com.chat.service.ChatMessageService"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 <!DOCTYPE HTML5>
@@ -28,7 +28,7 @@
                     </c:when>
                     <c:otherwise>
                         <p>
-                            Entrer votre nom pour se connecter et choisissez un salon si vous vous voulez accèder un salon
+                            Entrer votre name pour se connecter et choisissez un salon si vous vous voulez accèder un salon
                             existant cliquez sur la flêche"
                         </p>
                     </c:otherwise>

@@ -1,5 +1,9 @@
-package com.chat.modele;
+package com.chat.service;
 
+import com.chat.modele.Message;
+import com.chat.modele.Salon;
+import com.chat.modele.User;
+import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +18,25 @@ import java.util.*;
  *
  */
 @Service
-public class ChatGestionService implements GestionMessage {
+public class ChatMessageService implements GestionMessage {
 
-    private Map<String, List<Message>> map = new HashMap<>();
-    private Map<String, List<User>> userPerSalon = new HashMap<>();
+    private Map<Salon, List<Message>> map = new HashMap<>();
+    private Map<Salon, List<User>> userPerSalon = new HashMap<>();
 
     @Autowired
     private GestionUtilisateur gestionUtilisateur;
 
+    @Autowired
+    private GestionSalon gestionSalon;
+
     @Override
-    public void addMessage(String contenu, User user, String salon) {
+    public void addMessage(String contenu, User user, String salonName) throws DataException {
         Message message = new Message();
         message.setContenu(contenu);
         message.setUser(user);
         message.setDate(new Date());
+
+        Salon salon = gestionSalon.getSalonByName(salonName);
 
         if (map.containsKey(salon)) {
             map.get(salon).add(message);
@@ -38,13 +47,15 @@ public class ChatGestionService implements GestionMessage {
     }
 
     @Override
-    public void addSalon(String salon) {
+    public void addSalon(String salonName) throws DataException {
+        Salon salon = gestionSalon.getSalonByName(salonName);
         this.map.put(salon, new ArrayList<>());
 
     }
 
     @Override
-    public List<Message> getMessages(String salon) {
+    public List<Message> getMessages(String salonName) throws DataException {
+        Salon salon = gestionSalon.getSalonByName(salonName);
         if (map.containsKey(salon)) {
             return map.get(salon);
         } else {
@@ -53,14 +64,16 @@ public class ChatGestionService implements GestionMessage {
     }
 
     @Override
-    public void supprimerMessages(String salon) {
+    public void supprimerMessages(String salonName) throws DataException {
+        Salon salon = gestionSalon.getSalonByName(salonName);
         if (map.containsKey(salon)) {
             map.remove(map.get(salon));
         }
     }
 
     @Override
-    public int nombreMessage(String salon) {
+    public int nombreMessage(String salonName) throws DataException {
+        Salon salon = gestionSalon.getSalonByName(salonName);
         if (map.containsKey(salon)) {
             return map.get(salon).size();
         } else {
@@ -68,12 +81,12 @@ public class ChatGestionService implements GestionMessage {
         }
     }
 
-    public Map<String, List<Message>> getMap() {
+    public Map<Salon, List<Message>> getMap() {
         return map;
     }
 
 
-    public void setMap(Map<String, List<Message>> map) {
+    public void setMap(Map<Salon, List<Message>> map) {
         this.map = map;
     }
 
@@ -90,7 +103,8 @@ public class ChatGestionService implements GestionMessage {
     }
 
     @Override
-    public void addUserToSalon(String pseudo, String salon){
+    public void addUserToSalon(String pseudo, String salonName) throws DataException {
+        Salon salon = gestionSalon.getSalonByName(salonName);
         List<User> userList = this.userPerSalon.get(salon);
 
         if(userList == null){
@@ -104,5 +118,11 @@ public class ChatGestionService implements GestionMessage {
             User user = gestionUtilisateur.getUserByPseudo(pseudo);
             userList.add(user);
         }
+    }
+
+    @Override
+    public void removeUserToSalon(String pseudo, String salon){
+        List<User> userList = this.userPerSalon.get(salon);
+        userList.removeIf(u -> u.getPseudo().equals(pseudo));
     }
 }

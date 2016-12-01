@@ -1,7 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.chat.util.Utilitaire" %>
+<%@ page import="com.chat.util.DataException" %>
 <jsp:useBean id="gestion" scope="application"
-             class="com.chat.modele.ChatGestionService"/>
+             class="com.chat.service.ChatMessageService"/>
 <jsp:useBean id="util" scope="application"
              class="com.chat.util.Utilitaire"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
@@ -47,29 +48,33 @@
         //nb messages côté client
         nbMessClient = Integer.parseInt(tmpCookie.getValue());
         //nb messages côté serveur
-        nbMessServeur = gestion.nombreMessage(salon);
-
+        try {
+            nbMessServeur = gestion.nombreMessage(salon);
         /*
 		* Comparaison du nombre de messages, client/serveur.
 		* Si < est vrai, alors on va chercher les nouveaux messages,
 		* sinon on dit au client qu'il n'y a pas de nouveau contenu à récupérer (204)
 		*/
 
-        if (gestion.nombreMessage(salon) != 0) {
-            if (nbMessClient < nbMessServeur) {
-                response.addCookie(new Cookie(nomCookie, "" + gestion.nombreMessage(salon)));
-            } else if (nbMessClient == nbMessServeur) {
-                response.setStatus(204);
+            if (gestion.nombreMessage(salon) != 0) {
+                if (nbMessClient < nbMessServeur) {
+                    response.addCookie(new Cookie(nomCookie, "" + gestion.nombreMessage(salon)));
+                } else if (nbMessClient == nbMessServeur) {
+                    response.setStatus(204);
+                } else {
+                    Cookie creation = new Cookie(nomCookie, "0");
+                    creation.setMaxAge(60);
+                    response.addCookie(creation);
+                }
+
             } else {
                 Cookie creation = new Cookie(nomCookie, "0");
                 creation.setMaxAge(60);
                 response.addCookie(creation);
             }
-
-        } else {
-            Cookie creation = new Cookie(nomCookie, "0");
-            creation.setMaxAge(60);
-            response.addCookie(creation);
+        } catch (DataException e) {
+            /* TODO voir comment ameliorer cette partie là*/
+            e.printStackTrace();
         }
 
     }

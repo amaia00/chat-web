@@ -1,4 +1,8 @@
-package com.chat.modele;
+package com.chat.service;
+
+import com.chat.modele.Message;
+import com.chat.modele.User;
+import com.chat.util.DataException;
 
 import java.util.List;
 
@@ -16,14 +20,14 @@ public interface GestionMessage {
      * @param user  l'entité de l'utilisateur
      * @param salon   le salon du chat
      */
-    void addMessage(String contenu, User user, String salon);
+    void addMessage(String contenu, User user, String salon) throws DataException;
 
     /**
      * Cette méthode permet d'ajouter un salon
      *
      * @param salon le salon du chat
      */
-    void addSalon(String salon);
+    void addSalon(String salon) throws DataException;
 
     /**
      * Cette méthode permet de recupérer un message en fonction du salon
@@ -31,14 +35,14 @@ public interface GestionMessage {
      * @param salon le salon du chat
      * @return la liste de messages de ce salon là.
      */
-    List<Message> getMessages(String salon);
+    List<Message> getMessages(String salon) throws DataException;
 
     /**
      * cette méthode permet de supprimer un message d'un salon
      *
      * @param salon le nom du salon
      */
-    void supprimerMessages(String salon);
+    void supprimerMessages(String salon) throws DataException;
 
 
     /**
@@ -47,7 +51,7 @@ public interface GestionMessage {
      * @param salon le nom du salon
      * @return nombre de messages
      */
-    int nombreMessage(String salon);
+    int nombreMessage(String salon) throws DataException;
 
 
     /**
@@ -61,8 +65,18 @@ public interface GestionMessage {
      * Cette méthode ajoute un utilisateurs à la
      * liste d'utilisateurs connectés
      *
-     * @param pseudo pseduo
-     * @param salon salon
+     * @param pseudo le pseudo de l'utilisateur
+     * @param salon le salon auquel l'utilisateur est connecté
      */
-    void addUserToSalon(String pseudo, String salon);
+    void addUserToSalon(String pseudo, String salon) throws DataException;
+
+    /**
+     *
+     * Cette méthode supprime l'utilisateur de la liste d'utilisateurs
+     * connectés
+     *
+     * @param pseudo le pseudo de l'utilisateur
+     * @param salon le salon auquel l'utilisateur est connecté
+     */
+    void removeUserToSalon(String pseudo, String salon);
 }
