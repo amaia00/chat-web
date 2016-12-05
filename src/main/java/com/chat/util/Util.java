@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * @author hadjiszs
+ * @author Amaia Nazábal
  * @version 1.0
  * @since 1.0 12/5/16.
  */

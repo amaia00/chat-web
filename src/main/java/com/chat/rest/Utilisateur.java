@@ -16,6 +16,10 @@ public class Utilisateur extends User {
 
     private List<Salon> salons;
 
+    public Utilisateur(){
+        /* On a un constructeur par défault por generer le XML*/
+    }
+
     public Utilisateur(String pseudo, String prenom, String nom, String mail) {
         super(pseudo, prenom, nom, mail);
     }

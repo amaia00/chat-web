@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,11 +41,11 @@ public class SalonResource {
      */
     @RequestMapping(value = "/salons/{salon}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<Message> getMessages(@PathVariable String salon,
+    public Messages getMessages(@PathVariable String salon,
                                      HttpServletResponse response) {
-        List<Message> messages = new ArrayList<>();
+        Messages messages = new Messages();
         try {
-            messages = gestionMessage.getMessages(salon);
+            messages.setMessages(gestionMessage.getMessages(salon));
         } catch (DataException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -69,11 +68,13 @@ public class SalonResource {
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Long getQuantiteMessages(@PathVariable String salon,
+    public Quantite getQuantiteMessages(@PathVariable String salon,
                                   HttpServletResponse response) {
-        List<Message> messages = new ArrayList<>();
+        Quantite quantite = new Quantite(0L);
         try {
-            messages = gestionMessage.getMessages(salon);
+            List<Message> messages = gestionMessage.getMessages(salon);
+            quantite.setNombre(Long.valueOf(messages.size()));
+
             response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataException e) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -83,7 +84,7 @@ public class SalonResource {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        return Long.valueOf(messages.size());
+        return quantite;
     }
 
 
@@ -99,12 +100,12 @@ public class SalonResource {
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<Message> getLastMessagesAfterId(@PathVariable String salon,
+    public Messages getLastMessagesAfterId(@PathVariable String salon,
                                                  @PathVariable Long idMessage, HttpServletResponse response) {
-        List<Message> messages = new ArrayList<>();
+        Messages messages = new Messages();
 
         try {
-            messages = gestionMessage.getLastMessagesAfterId(salon, idMessage);
+            messages.setMessages(gestionMessage.getLastMessagesAfterId(salon, idMessage));
 
         } catch (DataException e) {
             LOGGER.log(Level.WARNING, "Can't retrieve the messages ", e);
