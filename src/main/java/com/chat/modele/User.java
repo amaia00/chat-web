@@ -1,5 +1,8 @@
 package com.chat.modele;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Amaia Nazábal
  * @version 1.0
@@ -13,10 +16,12 @@ public class User {
     private String nom;
     private String mail;
     private Status etat;
+    private List<Salon> salonList;
 
     public User(){
         /* On ajoute le constructeur par défaut por l'instantiation qui fait jackson avec le json quand on appel
         * par le post de addMessage */
+        salonList = new ArrayList<>();
     }
 
     public User(String pseudo, String prenom, String nom, String mail) {
@@ -24,6 +29,7 @@ public class User {
         this.prenom = prenom;
         this.nom = nom;
         this.mail = mail;
+        salonList = new ArrayList<>();
     }
 
     public Status getEtat() {
