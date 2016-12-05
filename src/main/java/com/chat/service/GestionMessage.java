@@ -82,21 +82,23 @@ public interface GestionMessage {
     void removeUserToSalon(String pseudo, String salon);
 
     /**
-     *  Cette méthode permete de récuperer un message pour son id
+     * Cette méthode permet de récuperer un message par id
+     *
      * @param id identifique le message
      * @return Un message que correspond à l'id
      */
     Message getMessage(Long id);
 
     /**
-     * permettre de supprimer un message
+     * Cette méthode permet de supprimer un message
+     *
      * @param salon Salon dans se trouve le message
      * @param id intificateur pour le message
      */
     void deleteMessage(String salon, Long id);
 
     /**
-     * Trouve le salon pour l'user
+     * Trouve le salon pour l'utilisateur
      *
      * @param user Utilisateur
      * @return liste avec les salons
@@ -105,8 +107,22 @@ public interface GestionMessage {
 
     /**
      * Trouve le dernier message
+     *
      * @param salon Salon dans se trouve le message
      * @return Le dernier message pour un salon
      */
     Message getDernierMessage(String salon);
+
+
+    /**
+     *
+     * Cette méthode retourne la liste de messages selon le nom du salon
+     * à partir d'un nombre de message indiqué
+     *
+     * @param salon le nom du salon
+     * @param id l'id du message à partir duquel on veut récupérer les autres messages
+     * @return la liste de messages
+     * @throws DataException si le salon n'existe pas
+     */
+    List<Message> getLastMessagesAfterId(String salon, Long id) throws DataException;
 }

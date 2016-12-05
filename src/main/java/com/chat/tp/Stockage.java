@@ -1,10 +1,11 @@
 package com.chat.tp;
 
+import com.chat.modele.User;
 import com.chat.service.GestionMessage;
 import com.chat.service.GestionSalon;
 import com.chat.service.GestionUtilisateur;
-import com.chat.modele.User;
 import com.chat.util.DataException;
+import com.chat.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.context.support.SpringBeanAutowiringSupport;
@@ -29,7 +30,7 @@ import java.util.logging.Logger;
 public class Stockage extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOGGER = Logger.getLogger(Message.class.getName());
-
+	private final Util util = new Util();
 
 	@Autowired
 	public GestionMessage gestionMessage;
@@ -67,19 +68,21 @@ public class Stockage extends HttpServlet {
 
 		HttpSession session = request.getSession();
 
-		String pseudo = session.getAttribute("pseudo").toString();
+		String pseudo = util.getSessionAttribute(request, Init.USERNAME);
+		String salon = util.getSessionAttribute(request, Init.CHANNEL);
 		String message = request.getParameter("contenu");
-		String salon = session.getAttribute("salon").toString();
 
+		if ("".equals(pseudo)){
+			util.redirectToIndex(response);
+		}
 
 		if (message != null){
-			//AJOUTER MESSAGE SALON
+			//ajouter message salon
 			session.setAttribute("entre", request.getParameter("entre"));
 			User user = gestionUtilisateur.getUserByPseudo(pseudo);
 			try {
 				gestionMessage.addMessage(message , user, salon);
 			} catch (DataException e) {
-				/* TODO tratar los encabezados a retornar cuando hay error */
 				LOGGER.log(Level.FINE, e.getMessage(), e);
 			}
 

@@ -14,7 +14,12 @@ public class User {
     private String mail;
     private Status etat;
 
-    public User(String pseudo, String prenom, String nom, String mail) {
+    public User(){
+        /* On ajoute le constructeur par défaut por l'instantiation qui fait jackson avec le json quand on appel
+        * par le post de addMessage */
+    }
+
+    public User(java.lang.String pseudo, java.lang.String prenom, java.lang.String nom, java.lang.String mail) {
         this.pseudo = pseudo;
         this.prenom = prenom;
         this.nom = nom;
@@ -29,35 +34,35 @@ public class User {
         this.etat = etat;
     }
 
-    public String getPseudo() {
+    public java.lang.String getPseudo() {
         return pseudo;
     }
 
-    public void setPseudo(String pseudo) {
+    public void setPseudo(java.lang.String pseudo) {
         this.pseudo = pseudo;
     }
 
-    public String getPrenom() {
+    public java.lang.String getPrenom() {
         return prenom;
     }
 
-    public void setPrenom(String prenom) {
+    public void setPrenom(java.lang.String prenom) {
         this.prenom = prenom;
     }
 
-    public String getNom() {
+    public java.lang.String getNom() {
         return nom;
     }
 
-    public void setNom(String nom) {
+    public void setNom(java.lang.String nom) {
         this.nom = nom;
     }
 
-    public String getMail() {
+    public java.lang.String getMail() {
         return mail;
     }
 
-    public void setMail(String mail) {
+    public void setMail(java.lang.String mail) {
         this.mail = mail;
     }
 
@@ -70,10 +75,5 @@ public class User {
         } else {
             return false;
         }
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 }

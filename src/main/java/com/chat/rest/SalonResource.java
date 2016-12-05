@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * @author Amaia Nazábal
@@ -35,71 +34,94 @@ public class SalonResource {
 
 
     /**
-     * Récupérer la liste des messages
+     * Cette méthode corresponds à l'ennoncé: Récupérer la liste des messages
+     *
+     * @param salon     le nom du salon
+     * @param response la reponse http
+     * @return la liste de messages du salon
      */
     @RequestMapping(value = "/salon/{salon}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<Message> getMessages(@PathVariable String salon) {
+    public List<Message> getMessages(@PathVariable String salon,
+                                     HttpServletResponse response) {
         List<Message> messages = new ArrayList<>();
         try {
             messages = gestionMessage.getMessages(salon);
         } catch (DataException e) {
-            LOGGER.log(Level.WARNING, "Can't retrieve the messages ", e);
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }catch (Exception e) {
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         return messages;
     }
 
     /**
-     * Récupérer le nombre de messages
+     * Cette méthode corresponds à l'ennoncé: Récupérer le nombre de messages
+     *
+     * @param salon       le nom du salon
+     * @param response    la reponse http
+     * @return le nombre des messages dans le salon donné
      */
     @RequestMapping(value = "/salon/{salon}/nombre",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Long getMessagesNombre(@PathVariable String salon) {
+    public Long getQuantiteMessages(@PathVariable String salon,
+                                  HttpServletResponse response) {
         List<Message> messages = new ArrayList<>();
         try {
             messages = gestionMessage.getMessages(salon);
+            response.setStatus(HttpServletResponse.SC_OK);
         } catch (DataException e) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             LOGGER.log(Level.WARNING, "Can't retrieve the messages ", e);
+        } catch (Exception e){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        return new Long(messages.size());
+        return Long.valueOf(messages.size());
     }
 
 
     /**
-     * Récupérer tous les messages envoyés après un message donné
+     * Cette méthode corresponds à l'ennoncé: Récupérer tous les messages envoyés après un message donné
      *
      * @param salon Nom du salon
-     * @return
+     * @param idMessage l'id du message à partir duquel on veut récupérer la liste
+     * @param response response http
+     * @return list du messages adans
      */
     @RequestMapping(value = "/salon/{salon}/{idMessage}",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public List<Message> getMessagesApresMessage(@PathVariable String salon, @PathVariable Long idMessage) {
-        List<Message> filteredMessages = new ArrayList<>();
+    public List<Message> getLastMessagesAfterId(@PathVariable String salon,
+                                                 @PathVariable Long idMessage, HttpServletResponse response) {
+        List<Message> messages = new ArrayList<>();
 
         try {
-            List<Message> messages = gestionMessage.getMessages(salon);
-            Message currentMessage = gestionMessage.getMessage(idMessage);
-            filteredMessages = messages.stream().filter(m ->
-                    m.getDate().after(currentMessage.getDate())
-            ).collect(Collectors.toList());
+            messages = gestionMessage.getLastMessagesAfterId(salon, idMessage);
+
         } catch (DataException e) {
             LOGGER.log(Level.WARNING, "Can't retrieve the messages ", e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        return filteredMessages;
+        return messages;
     }
 
     /**
-     * Supprimer un message
+     * Cette méthode corresponds à l'ennoncé: Supprimer un message
      *
      * @param salon Nom du salon
-     * @return Le message ajutee
+     * @param response  response http
      */
     @RequestMapping(value = "/salon/{salon}",
             method = RequestMethod.DELETE,
@@ -108,15 +130,20 @@ public class SalonResource {
     public void deleteSalon(@PathVariable String salon, HttpServletResponse response) {
         try {
             gestionSalon.removeSalon(salon);
-            response.setStatus(HttpServletResponse.SC_OK);
+
+            /* On ne retourne pas aucun réponse */
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
         } catch (DataException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } catch (Exception e){
             LOGGER.log(Level.SEVERE, "Can't remove salon", e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 
     /**
-     * Ajouter un message
+     * Cette méthode correspond à l'ennoncé: Ajouter un message
      *
      * @param salon Nom du salon
      * @return Le message ajutee
@@ -125,15 +152,22 @@ public class SalonResource {
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Message addMessage(@PathVariable String salon, @RequestBody Message message, HttpServletResponse response) {
+    public Message addMessage(@PathVariable String salon, @RequestBody Message message,
+                              HttpServletResponse response) {
+        Message ret = null;
         try {
-            Message ret = gestionMessage.addMessage(message.getContenu(), message.getUser(), salon);
-            return ret;
+                ret = gestionMessage.addMessage(message.getContenu(), message.getUser(), salon);
+            response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (DataException e) {
+            /* Si on ne trouve pas le salon indique dans le path */
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }catch (Exception e){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
-        return null;
+        return ret;
     }
 
 }

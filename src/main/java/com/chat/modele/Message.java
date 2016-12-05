@@ -18,6 +18,11 @@ public class Message {
     private User user;
     private Date date;
 
+    public Message(){
+        /* on ajoute le constructeur par défaut à cause de jackson pour la conversion de json à l'objet*/
+        date = new Date();
+    }
+
     public Long getId() {
         return this.id;
     }
@@ -58,7 +63,7 @@ public class Message {
 
     @Override
     public String toString() {
-        return user + ": " + contenu + "  ----" + date.toString() + "\n";
+        return user + ": " + contenu + "  ----" + "\n";
     }
 
 

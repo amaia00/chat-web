@@ -6,13 +6,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 
-<%@ page import="org.springframework.beans.factory.annotation.Autowired"%>
-<%@ page import="org.springframework.web.context.support.SpringBeanAutowiringSupport"%>
+<%@ page import="org.springframework.beans.factory.annotation.Autowired" %>
+<%@ page import="org.springframework.web.context.support.SpringBeanAutowiringSupport" %>
 <%@ page import="com.chat.service.ChatMessageService" %>
 
 <%!
-    public void jspInit()
-    {
+    public void jspInit() {
         ServletConfig config = getServletConfig();
 
         SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
@@ -62,14 +61,16 @@
 
         //nb messages côté client
         nbMessClient = Integer.parseInt(tmpCookie.getValue());
-        //nb messages côté serveur
+
         try {
+            //nb messages côté serveur
             nbMessServeur = gestion.nombreMessage(salon);
-        /*
-		* Comparaison du nombre de messages, client/serveur.
-		* Si < est vrai, alors on va chercher les nouveaux messages,
-		* sinon on dit au client qu'il n'y a pas de nouveau contenu à récupérer (204)
-		*/
+
+            /*
+            * Comparaison du nombre de messages, client/serveur.
+            * Si < est vrai, alors on va chercher les nouveaux messages,
+            * sinon on dit au client qu'il n'y a pas de nouveau contenu à récupérer (304)
+            */
 
             if (gestion.nombreMessage(salon) != 0) {
                 if (nbMessClient < nbMessServeur) {
@@ -92,10 +93,6 @@
             e.printStackTrace();
         }
 
-    }
-    //Un contenu va être ajouté
-    else if (methode.equalsIgnoreCase("post")) {
-        //response.setStatus(204);
     }
 %>
 

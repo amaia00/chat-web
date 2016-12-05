@@ -1,8 +1,10 @@
 package com.chat.controler;
 
-import com.chat.service.*;
 import com.chat.modele.Message;
 import com.chat.modele.User;
+import com.chat.service.GestionMessage;
+import com.chat.service.GestionSalon;
+import com.chat.service.GestionUtilisateur;
 import com.chat.tp.Init;
 import com.chat.util.Constantes;
 import com.chat.util.DataException;
@@ -104,11 +106,10 @@ public class BackOfficeController {
     @RequestMapping(value = "/{salon}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap, @PathVariable String salon) {
 
-        List<Message> messages = null;
+        List<Message> messages;
         try {
             messages = gestionMessage.getMessages(salon);
         } catch (DataException e) {
-            /* TODO tratar los encabezados a retornar cuando hay error */
             LOGGER.log(Level.OFF, e.getMessage(), e);
             messages = new ArrayList<>();
         }
@@ -132,14 +133,13 @@ public class BackOfficeController {
                                @PathVariable String salon,
                                @PathVariable Integer num) {
 
-        List<Message> messages = null;
+        List<Message> messages;
         try {
             messages = gestionMessage.getMessages(salon);
 
             Message message = messages.get(num);
             modelMap.put("message", message == null ? "" : message);
         } catch (DataException e) {
-            /* TODO tratar los encabezados a retornar cuando hay error */
             LOGGER.log(Level.FINE, e.getMessage(), e);
         }
 
@@ -168,6 +168,7 @@ public class BackOfficeController {
         try{
             userList = gestionMessage.getUserList(salon, pseudo);
         }catch (DataException de){
+            LOGGER.log(Level.FINE, de.getMessage(), de);
             userList = new ArrayList<>();
             LOGGER.fine("Empty userList");
         }
@@ -205,7 +206,6 @@ public class BackOfficeController {
         try {
             gestionSalon.addSalon(salon);
         } catch (DataException e) {
-            /* TODO tratar los encabezados a retornar cuando hay error */
             LOGGER.log(Level.FINE, e.getMessage(), e);
         }
         try {
@@ -231,15 +231,25 @@ public class BackOfficeController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        String pseudo = session.getAttribute(Init.USERNAME).toString();
-        String salon = session.getAttribute(Init.CHANNEL).toString();
+        String pseudo = getSessionAttribute(request, Init.USERNAME);
+        String salon = getSessionAttribute(request, Init.CHANNEL);
 
-        gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
-        gestionMessage.removeUserToSalon(pseudo, salon);
-        session.invalidate();
-
+        if (!"".equals(pseudo)) {
+            gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
+            gestionMessage.removeUserToSalon(pseudo, salon);
+            session.invalidate();
+        }
 
         return "redirect:/index.jsp";
+    }
+
+    private String getSessionAttribute(HttpServletRequest request, String attribute){
+        HttpSession session = request.getSession();
+        if (session.getAttribute(attribute) != null){
+            return session.getAttribute(attribute).toString();
+        }else{
+            return "";
+        }
     }
 
 }

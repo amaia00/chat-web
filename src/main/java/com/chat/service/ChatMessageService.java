@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Cette classe garde tous les fonctions sur le salon et les messages
@@ -129,7 +130,8 @@ public class ChatMessageService implements GestionMessage {
 
     @Override
     public void removeUserToSalon(String pseudo, String salon) {
-        Map.Entry<Salon, List<User>> firstFound = this.userPerSalon.entrySet().stream().filter(e -> e.getKey().getName().equals(salon))
+        Map.Entry<Salon, List<User>> firstFound = this.userPerSalon.entrySet().stream()
+                .filter(e -> e.getKey().getName().equals(salon))
                 .findFirst().get();
         List<User> userList = this.userPerSalon.get(firstFound.getKey());
         userList.removeIf(u -> u.getPseudo().equals(pseudo));
@@ -168,6 +170,16 @@ public class ChatMessageService implements GestionMessage {
             return new Message();
         }
 
+    }
+
+    @Override
+    public List<Message> getLastMessagesAfterId(String salon, Long id) throws DataException {
+        List<Message> messages = getMessages(salon);
+        Message currentMessage = getMessage(id);
+
+        return messages.stream().filter(m ->
+                m.getDate().after(currentMessage.getDate())
+        ).collect(Collectors.toList());
     }
 
     @Override
