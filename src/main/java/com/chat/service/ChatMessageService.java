@@ -128,6 +128,10 @@ public class ChatMessageService implements GestionMessage {
                 .findFirst().isPresent()) {
             User user = gestionUtilisateur.getUserByPseudo(pseudo);
             userList.add(user);
+
+            /* On ajout à la liste des salons visités*/
+            gestionUtilisateur.addSalonUser(salon, pseudo);
+
         }
     }
 
@@ -156,14 +160,10 @@ public class ChatMessageService implements GestionMessage {
 
 
     @Override
-    public Message getDernierMessage(String salon) {
-        List<Message> messages = new ArrayList<>();
+    public Message getDernierMessage(String salon) throws DataException {
+        List<Message> messages;
 
-        try {
-            messages = getMessages(salon);
-        } catch (DataException e) {
-            LOGGER.log(Level.WARNING, "There is no messages for that salon", e);
-        }
+        messages = getMessages(salon);
 
         Optional<Message> max = messages.stream().max((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
 

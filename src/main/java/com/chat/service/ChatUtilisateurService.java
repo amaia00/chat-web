@@ -1,5 +1,6 @@
 package com.chat.service;
 
+import com.chat.modele.Salon;
 import com.chat.modele.User;
 import com.chat.rest.Utilisateur;
 import com.chat.util.Constante;
@@ -38,6 +39,16 @@ public class ChatUtilisateurService implements GestionUtilisateur {
                 throw new DataException(Constante.MAIL_ALREADY_EXISTS);
         else
             throw new DataException(Constante.USERNAME_ALREADY_EXISTS);
+    }
+
+    @Override
+    public void addSalonUser(Salon salon, String pseudo){
+        User user = getUserByPseudo(pseudo);
+
+        if (!user.getSalonList().stream().filter(s -> s.getName()
+                .equals(salon.getName())).findFirst().isPresent()) {
+            user.getSalonList().add(salon);
+        }
     }
 
     @Override
@@ -90,10 +101,16 @@ public class ChatUtilisateurService implements GestionUtilisateur {
     }
 
     @Override
+    public List<Salon> getSalonByUser(String pseudo) {
+        return getUserByPseudo(pseudo).getSalonList();
+    }
+
+
+    @Override
     public Utilisateur newUtilisateur(User user) {
         Utilisateur utilisateur = new Utilisateur(user.getPseudo(), user.getPrenom(), user.getNom(), user.getMail());
         utilisateur.setEtat(getUserByPseudo(user.getPseudo()).getEtat());
-        utilisateur.setSalons(gestionMessage.getSalonsByUser(user));
+        utilisateur.setSalons(getSalonByUser(user.getPseudo()));
 
         return utilisateur;
     }

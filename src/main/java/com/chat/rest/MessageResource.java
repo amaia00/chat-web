@@ -79,6 +79,9 @@ public class MessageResource {
         } catch (DataException e) {
             LOGGER.log(Level.WARNING, e.getMessage(), e);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } catch (Exception e){
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         return lastMessage;
@@ -97,13 +100,21 @@ public class MessageResource {
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public void deleteDernierMessage(@PathVariable String salon, @PathVariable Long id, HttpServletResponse response) {
-
-        Message lastMessage = gestionMessage.getDernierMessage(salon);
-        if (lastMessage.getId().equals(id)) {
-            gestionMessage.deleteMessage(salon, id);
-        }else{
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        try{
+            Message lastMessage = gestionMessage.getDernierMessage(salon);
+            if (lastMessage.getId().equals(id)) {
+                gestionMessage.deleteMessage(salon, id);
+            }else{
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }catch (DataException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } catch (Exception e){
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+
     }
 
 }

@@ -111,7 +111,7 @@ public interface GestionMessage {
      * @param salon Salon dans se trouve le message
      * @return Le dernier message pour un salon
      */
-    Message getDernierMessage(String salon);
+    Message getDernierMessage(String salon) throws DataException;
 
 
     /**

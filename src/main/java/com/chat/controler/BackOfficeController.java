@@ -209,6 +209,9 @@ public class BackOfficeController {
             LOGGER.log(Level.FINE, e.getMessage(), e);
         }
         try {
+            /* On ajoute l'utilisateur à la liste d'utilisateurs
+            * connectés dans le salon, mais aussi on ajoute le salon
+            * dans la liste de salon visités pour l'utilisateur */
             gestionMessage.addUserToSalon(pseudo, salon);
         }catch (DataException e ){
             LOGGER.log(Level.FINE, e.getMessage(), e);

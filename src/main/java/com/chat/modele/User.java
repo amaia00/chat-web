@@ -18,6 +18,7 @@ public class User {
     private Status etat;
     private List<Salon> salonList;
 
+
     public User(){
         /* On ajoute le constructeur par défaut por l'instantiation qui fait jackson avec le json quand on appel
         * par le post de addMessage */
@@ -70,6 +71,14 @@ public class User {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public List<Salon> getSalonList() {
+        return salonList;
+    }
+
+    public void setSalonList(List<Salon> salonList) {
+        this.salonList = salonList;
     }
 
     @Override
