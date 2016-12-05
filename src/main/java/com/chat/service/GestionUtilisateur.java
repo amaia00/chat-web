@@ -49,4 +49,12 @@ public interface GestionUtilisateur {
      * @return l'entite de l'utilisateur
      */
     User getUserByPseudo(String pseudo);
+
+    /**
+     * Permettre la modification d'un utilisateur
+     *
+     * @param user objet d'utlisateur
+     * @return le modifié user
+     */
+    User updateUser(String pseudo, User user);
 }

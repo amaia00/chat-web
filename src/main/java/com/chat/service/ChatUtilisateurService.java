@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
  * Cette classe garde toutes les méthodes sur l'inscription d'utilisateurs
  *
  * @author Amaia Nazábal
@@ -19,6 +21,7 @@ import java.util.List;
 @Service
 public class ChatUtilisateurService implements GestionUtilisateur {
 
+    private static final Logger LOGGER = Logger.getLogger(ChatUtilisateurService.class.getName());
     private List<User> userList = new ArrayList<>();
 
     @Override
@@ -50,5 +53,25 @@ public class ChatUtilisateurService implements GestionUtilisateur {
     public User getUserByPseudo(String pseudo) {
         return userList.stream().filter(u -> u.getPseudo().equals(pseudo))
                 .findFirst().orElse(null);
+    }
+
+    @Override
+    public User updateUser(String pseudo, User user) {
+        Optional<User> first = userList.stream().filter(u ->
+                u.getPseudo().equals(pseudo)
+        ).findFirst();
+
+        User u = null;
+        if (first.isPresent()) {
+            u = first.get();
+            u.setPseudo(pseudo);
+        } else {
+            try {
+                this.addUser(user.getPseudo(), user.getPrenom(), user.getNom(), user.getMail());
+            } catch (DataException e) {
+                LOGGER.log(Level.WARNING, "Can't update/add the user", e);
+            }
+        }
+        return u;
     }
 }

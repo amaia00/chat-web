@@ -26,4 +26,9 @@ public class Salon {
     public void setLastMessage(Date lastMessage) {
         this.lastMessage = lastMessage;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

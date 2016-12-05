@@ -4,21 +4,24 @@ import com.chat.modele.Message;
 import com.chat.modele.Salon;
 import com.chat.modele.User;
 import com.chat.util.DataException;
+import com.chat.util.IdentifierUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
  * Cette classe garde tous les fonctions sur le salon et les messages
  *
  * @author Sofia Faddi
  * @author Amaia Nazábal
- *
  */
 @Service
 public class ChatMessageService implements GestionMessage {
+
+    private static final Logger LOGGER = Logger.getLogger(ChatMessageService.class.getName());
 
     private Map<Salon, List<Message>> map = new HashMap<>();
     private Map<Salon, List<User>> userPerSalon = new HashMap<>();
@@ -30,11 +33,12 @@ public class ChatMessageService implements GestionMessage {
     private GestionSalon gestionSalon;
 
     @Override
-    public void addMessage(String contenu, User user, String salonName) throws DataException {
+    public Message addMessage(String contenu, User user, String salonName) throws DataException {
         Message message = new Message();
         message.setContenu(contenu);
         message.setUser(user);
         message.setDate(new Date());
+        message.setId(IdentifierUtil.getIdValue());
 
         Salon salon = gestionSalon.getSalonByName(salonName);
 
@@ -44,6 +48,8 @@ public class ChatMessageService implements GestionMessage {
             map.put(salon, new ArrayList<>());
             map.get(salon).add(message);
         }
+
+        return message;
     }
 
     @Override
@@ -92,12 +98,13 @@ public class ChatMessageService implements GestionMessage {
 
 
     @Override
-    public List<User> getUserList(String salon, String pseudo) {
-        List<User> userList = this.userPerSalon.get(salon);
+    public List<User> getUserList(String salon, String pseudo) throws DataException {
+        Salon salonByName = this.gestionSalon.getSalonByName(salon);
+        List<User> userList = this.userPerSalon.get(salonByName);
 
-        if(userList != null){
+        if (userList != null) {
             return userList;
-        }else{
+        } else {
             return new ArrayList<>();
         }
     }
@@ -107,9 +114,9 @@ public class ChatMessageService implements GestionMessage {
         Salon salon = gestionSalon.getSalonByName(salonName);
         List<User> userList = this.userPerSalon.get(salon);
 
-        if(userList == null){
+        if (userList == null) {
             userList = new ArrayList<>();
-            this.userPerSalon.put(salon,userList);
+            this.userPerSalon.put(salon, userList);
         }
 
         /* On contrôle que l'utilisateur n'existe pas déjà dans la liste */
@@ -121,8 +128,69 @@ public class ChatMessageService implements GestionMessage {
     }
 
     @Override
-    public void removeUserToSalon(String pseudo, String salon){
-        List<User> userList = this.userPerSalon.get(salon);
+    public void removeUserToSalon(String pseudo, String salon) {
+        Map.Entry<Salon, List<User>> firstFound = this.userPerSalon.entrySet().stream().filter(e -> e.getKey().getName().equals(salon))
+                .findFirst().get();
+        List<User> userList = this.userPerSalon.get(firstFound.getKey());
         userList.removeIf(u -> u.getPseudo().equals(pseudo));
+    }
+
+    @Override
+    public Message getMessage(Long id) {
+
+        for (List<Message> messages : map.values()) {
+            for (Message m : messages) {
+                if (m.getId().equals(id)) {
+                    return m;
+                }
+            }
+        }
+
+        return null;
+    }
+
+
+    @Override
+    public Message getDernierMessage(String salon) {
+        List<Message> messages = new ArrayList<>();
+
+        try {
+            messages = getMessages(salon);
+        } catch (DataException e) {
+            LOGGER.log(Level.WARNING, "There is no messages for that salon", e);
+        }
+
+        Optional<Message> max = messages.stream().max((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+
+        if (max.isPresent()) {
+            return max.get();
+        } else {
+            return new Message();
+        }
+
+    }
+
+    @Override
+    public void deleteMessage(String salon, Long id) {
+        try {
+            List<Message> messages = getMessages(salon);
+            messages.remove(getMessage(id));
+        } catch (DataException e) {
+            LOGGER.log(Level.WARNING, "Can't remove message", e);
+        }
+    }
+
+
+    @Override
+    public List<Salon> getSalonsByUser(User user) {
+        List<Salon> ret = new ArrayList<>();
+
+        this.userPerSalon.entrySet().forEach(m -> {
+            if (m.getValue().stream().anyMatch(u -> u.equals(user))) {
+                ret.add(m.getKey());
+            }
+        });
+
+        return ret;
     }
 }

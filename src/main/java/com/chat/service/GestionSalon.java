@@ -15,5 +15,4 @@ public interface GestionSalon {
     Salon getSalonByName(String salon) throws DataException;
 
     void removeSalon(String name) throws DataException;
-
 }

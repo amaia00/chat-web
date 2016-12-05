@@ -1,14 +1,28 @@
 <%@ page import="com.chat.modele.Salon" %>
 <%@ page import="com.chat.util.DataException" %>
-<jsp:useBean id="gestion" scope="session"
-			 class="com.chat.service.ChatMessageService"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="org.springframework.beans.factory.annotation.Autowired"%>
+<%@ page import="org.springframework.web.context.support.SpringBeanAutowiringSupport"%>
+<%@ page import="com.chat.service.ChatMessageService" %>
+<%!
+	public void jspInit()
+	{
+		ServletConfig config = getServletConfig();
+
+		SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+				config.getServletContext());
+	}
+
+	@Autowired
+	private ChatMessageService gestion;
+%>
+
 <!DOCTYPE html5">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Stockage</title>
 </head>
 <body>
 

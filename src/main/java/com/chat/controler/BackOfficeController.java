@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -109,6 +110,7 @@ public class BackOfficeController {
         } catch (DataException e) {
             /* TODO tratar los encabezados a retornar cuando hay error */
             LOGGER.log(Level.OFF, e.getMessage(), e);
+            messages = new ArrayList<>();
         }
         modelMap.put("messages", messages);
 
@@ -161,7 +163,14 @@ public class BackOfficeController {
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute(Init.USERNAME).toString();
 
-        List<User> userList = gestionMessage.getUserList(salon, pseudo);
+
+        List<User> userList;
+        try{
+            userList = gestionMessage.getUserList(salon, pseudo);
+        }catch (DataException de){
+            userList = new ArrayList<>();
+            LOGGER.fine("Empty userList");
+        }
         modelMap.addAttribute("users", userList);
 
         return "restreint/listuser";
@@ -195,9 +204,13 @@ public class BackOfficeController {
 
         try {
             gestionSalon.addSalon(salon);
-            gestionMessage.addUserToSalon(pseudo,salon);
         } catch (DataException e) {
             /* TODO tratar los encabezados a retornar cuando hay error */
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
+        try {
+            gestionMessage.addUserToSalon(pseudo, salon);
+        }catch (DataException e ){
             LOGGER.log(Level.FINE, e.getMessage(), e);
         }
 

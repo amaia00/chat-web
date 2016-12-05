@@ -1,6 +1,7 @@
 package com.chat.service;
 
 import com.chat.modele.Message;
+import com.chat.modele.Salon;
 import com.chat.modele.User;
 import com.chat.util.DataException;
 
@@ -20,7 +21,7 @@ public interface GestionMessage {
      * @param user  l'entité de l'utilisateur
      * @param salon   le salon du chat
      */
-    void addMessage(String contenu, User user, String salon) throws DataException;
+    Message addMessage(String contenu, User user, String salon) throws DataException;
 
     /**
      * Cette méthode permet d'ajouter un salon
@@ -59,7 +60,7 @@ public interface GestionMessage {
      * @param pseudo le pseudo de l'utilisateur actuel
      * @return la liste d'utilisateurs connectés dans ce salon
      */
-    List<User> getUserList(String salon, String pseudo);
+    List<User> getUserList(String salon, String pseudo) throws DataException;
 
     /**
      * Cette méthode ajoute un utilisateurs à la
@@ -79,4 +80,33 @@ public interface GestionMessage {
      * @param salon le salon auquel l'utilisateur est connecté
      */
     void removeUserToSalon(String pseudo, String salon);
+
+    /**
+     *  Cette méthode permete de récuperer un message pour son id
+     * @param id identifique le message
+     * @return Un message que correspond à l'id
+     */
+    Message getMessage(Long id);
+
+    /**
+     * permettre de supprimer un message
+     * @param salon Salon dans se trouve le message
+     * @param id intificateur pour le message
+     */
+    void deleteMessage(String salon, Long id);
+
+    /**
+     * Trouve le salon pour l'user
+     *
+     * @param user Utilisateur
+     * @return liste avec les salons
+     */
+    List<Salon> getSalonsByUser(User user);
+
+    /**
+     * Trouve le dernier message
+     * @param salon Salon dans se trouve le message
+     * @return Le dernier message pour un salon
+     */
+    Message getDernierMessage(String salon);
 }

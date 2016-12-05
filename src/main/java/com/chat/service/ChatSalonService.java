@@ -1,5 +1,6 @@
 package com.chat.service;
 
+import com.chat.modele.Message;
 import com.chat.modele.Salon;
 import com.chat.util.DataException;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,8 @@ public class ChatSalonService implements GestionSalon{
             salon = null;
         }
 
-        if (salon != null) {
+        if (salon == null) {
+            salon = new Salon();
             salon.setName(name);
             salon.setLastMessage(null);
             salonList.add(salon);
@@ -58,5 +60,5 @@ public class ChatSalonService implements GestionSalon{
             throw new DataException("The channel doesn't exists");
         }
     }
-
 }
+

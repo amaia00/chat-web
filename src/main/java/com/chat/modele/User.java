@@ -7,7 +7,7 @@ package com.chat.modele;
  */
 public class User {
     public enum Status {ONLINE, OFFLINE}
-    
+
     private String pseudo;
     private String prenom;
     private String nom;
@@ -59,5 +59,21 @@ public class User {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (super.equals(obj)) {
+            User u = (User) obj;
+            return this.getPseudo().equals(u.getPseudo());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

@@ -1,62 +1,73 @@
 package com.chat.modele;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.text.DateFormat;
 
 /**
  * @author Sophiaa Fadi
  * @version 1.0
- *
  */
+@XmlRootElement
 public class Message {
 
-	private String contenu;
-	private User user;
-	private Date date;
+    private Long id;
 
-	public String getContenu() {
-		return contenu;
-	}
+    private String contenu;
+    private User user;
+    private Date date;
 
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setContenu(String contenu) {
-		this.contenu = contenu;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-
-	public User getUser() {
-		return user;
-	}
-
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+    public String getContenu() {
+        return contenu;
+    }
 
 
-	public Date getDate() {
-		return date;
-	}
+    public void setContenu(String contenu) {
+        this.contenu = contenu;
+    }
 
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public User getUser() {
+        return user;
+    }
 
 
-	@Override
-	public String toString() {
-		return user + ": " + contenu + "  ----" + date.toString() + "\n";
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
 
-	public String getHourFormatted() {
-		DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-		DateFormat formatter1 = new SimpleDateFormat("dd/mm/yy");
+    public Date getDate() {
+        return date;
+    }
 
-		String hour = formatter.format(this.date);
-		String day = formatter1.format(this.date);
-		return "Envoyé le "+day+" à "+hour;
-	}
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+    @Override
+    public String toString() {
+        return user + ": " + contenu + "  ----" + date.toString() + "\n";
+    }
+
+
+    public String getHourFormatted() {
+        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        DateFormat formatter1 = new SimpleDateFormat("dd/mm/yy");
+
+        String hour = formatter.format(this.date);
+        String day = formatter1.format(this.date);
+        return "Envoyé le " + day + " à " + hour;
+    }
 }

@@ -1,12 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="com.chat.util.Utilitaire" %>
 <%@ page import="com.chat.util.DataException" %>
-<jsp:useBean id="gestion" scope="application"
-             class="com.chat.service.ChatMessageService"/>
 <jsp:useBean id="util" scope="application"
              class="com.chat.util.Utilitaire"/>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
+
+<%@ page import="org.springframework.beans.factory.annotation.Autowired"%>
+<%@ page import="org.springframework.web.context.support.SpringBeanAutowiringSupport"%>
+<%@ page import="com.chat.service.ChatMessageService" %>
+
+<%!
+    public void jspInit()
+    {
+        ServletConfig config = getServletConfig();
+
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                config.getServletContext());
+    }
+
+    @Autowired
+    private ChatMessageService gestion;
+%>
 <!DOCTYPE html5">
 <html>
 <head>
@@ -60,7 +75,7 @@
                 if (nbMessClient < nbMessServeur) {
                     response.addCookie(new Cookie(nomCookie, "" + gestion.nombreMessage(salon)));
                 } else if (nbMessClient == nbMessServeur) {
-                    response.setStatus(204);
+                    response.setStatus(304);
                 } else {
                     Cookie creation = new Cookie(nomCookie, "0");
                     creation.setMaxAge(60);
