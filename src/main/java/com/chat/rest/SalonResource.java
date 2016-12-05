@@ -40,7 +40,7 @@ public class SalonResource {
      * @param response la reponse http
      * @return la liste de messages du salon
      */
-    @RequestMapping(value = "/salon/{salon}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @RequestMapping(value = "/salons/{salon}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public List<Message> getMessages(@PathVariable String salon,
                                      HttpServletResponse response) {
@@ -65,7 +65,7 @@ public class SalonResource {
      * @param response    la reponse http
      * @return le nombre des messages dans le salon donné
      */
-    @RequestMapping(value = "/salon/{salon}/nombre",
+    @RequestMapping(value = "/salons/{salon}/nombre",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -95,7 +95,7 @@ public class SalonResource {
      * @param response response http
      * @return list du messages adans
      */
-    @RequestMapping(value = "/salon/{salon}/{idMessage}",
+    @RequestMapping(value = "/salons/{salon}/{idMessage}",
             method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -123,7 +123,7 @@ public class SalonResource {
      * @param salon Nom du salon
      * @param response  response http
      */
-    @RequestMapping(value = "/salon/{salon}",
+    @RequestMapping(value = "/salons/{salon}",
             method = RequestMethod.DELETE,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -148,7 +148,7 @@ public class SalonResource {
      * @param salon Nom du salon
      * @return Le message ajutee
      */
-    @RequestMapping(value = "/salon/{salon}",
+    @RequestMapping(value = "/salons/{salon}",
             method = RequestMethod.POST,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody

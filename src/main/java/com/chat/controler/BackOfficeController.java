@@ -6,7 +6,7 @@ import com.chat.service.GestionMessage;
 import com.chat.service.GestionSalon;
 import com.chat.service.GestionUtilisateur;
 import com.chat.tp.Init;
-import com.chat.util.Constantes;
+import com.chat.util.Constante;
 import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -79,7 +79,7 @@ public class BackOfficeController {
         try {
             gestionUtilisateur.addUser(pseudo, name, lastName, mail);
 
-            model.addAttribute("msg", Constantes.CORRECT_INSCRIPTION);
+            model.addAttribute("msg", Constante.CORRECT_INSCRIPTION);
             model.addAttribute("username", pseudo);
             return "redirect:/index.jsp";
 
@@ -195,7 +195,7 @@ public class BackOfficeController {
                         Model model) {
 
         if (!gestionUtilisateur.existsUsername(pseudo)) {
-            model.addAttribute("msg", Constantes.USER_NOT_EXISTS);
+            model.addAttribute("msg", Constante.USER_NOT_EXISTS);
             return "redirect:/inscription.jsp";
         }
 

@@ -3,6 +3,7 @@ package com.chat.service;
 import com.chat.modele.Message;
 import com.chat.modele.Salon;
 import com.chat.modele.User;
+import com.chat.util.Constante;
 import com.chat.util.DataException;
 import com.chat.util.IdentifierUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class ChatMessageService implements GestionMessage {
         message.setId(IdentifierUtil.getIdValue());
 
         Salon salon = gestionSalon.getSalonByName(salonName);
+        salon.setLastMessage(message.getDate());
 
         if (map.containsKey(salon)) {
             map.get(salon).add(message);
@@ -49,6 +51,7 @@ public class ChatMessageService implements GestionMessage {
             map.put(salon, new ArrayList<>());
             map.get(salon).add(message);
         }
+
 
         return message;
     }
@@ -138,7 +141,7 @@ public class ChatMessageService implements GestionMessage {
     }
 
     @Override
-    public Message getMessage(Long id) {
+    public Message getMessage(Long id) throws DataException {
 
         for (List<Message> messages : map.values()) {
             for (Message m : messages) {
@@ -148,7 +151,7 @@ public class ChatMessageService implements GestionMessage {
             }
         }
 
-        return null;
+        throw new DataException(Constante.MSG_NOT_EXISTS);
     }
 
 
@@ -183,6 +186,20 @@ public class ChatMessageService implements GestionMessage {
     }
 
     @Override
+    public Message updateLastMessage(String salon, Message message) throws DataException {
+        Message lastMessage = getDernierMessage(salon);
+
+        if (lastMessage.getId().equals(message.getId())) {
+            lastMessage.setContenu(message.getContenu());
+            lastMessage.setDate(message.getDate());
+        } else {
+            throw new DataException(Constante.MSG_ISNT_LAST);
+        }
+
+        return lastMessage;
+    }
+
+    @Override
     public void deleteMessage(String salon, Long id) {
         try {
             List<Message> messages = getMessages(salon);
@@ -205,4 +222,6 @@ public class ChatMessageService implements GestionMessage {
 
         return ret;
     }
+
+
 }

@@ -3,6 +3,7 @@ package com.chat.rest;
 import com.chat.modele.Message;
 import com.chat.service.ChatMessageService;
 import com.chat.service.GestionMessage;
+import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -30,35 +31,68 @@ public class MessageResource {
     }
 
 
+    /**
+     *
+     * Cette méthode corresponde à l'ennoncé: Récupérer les informations du message (auteur, texte)
+     *
+     * @param id l'identificateur du message
+     * @param response la reponse http
+     * @return le id-ième message
+     */
     @RequestMapping(value = "/messages/{id}", method = RequestMethod.GET,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public Message getMessage(@PathVariable Long id, HttpServletResponse response) {
-        Message message = this.gestionMessage.getMessage(id);
-        if (message == null) {
+        Message message = null;
+        try {
+            message = this.gestionMessage.getMessage(id);
+        } catch (DataException e) {
+            LOGGER.log(Level.INFO, "Message not found [id:" + id + "]", e);
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            LOGGER.log(Level.INFO, "Message not found [id:" + id + "]");
+        } catch (Exception e){
+            LOGGER.log(Level.SEVERE, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
+
         return message;
     }
 
+    /**
+     *
+     * Cette méthode corresponds à l'ennoncé: Modifier le contenu du dernier message d'un salon (doit renvoyer une
+     * erreur si ce n'est pas le dernier message)
+     *
+     * @param salon le nom du salon
+     * @param id l'identificateur du message
+     * @param message le nouveau contenu du message
+     * @return le message actualisé
+     */
     @RequestMapping(value = "/messages/{salon}/{id}", method = RequestMethod.PUT,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
-    public Message updateLastMessage(@PathVariable String salon, @PathVariable Long id, @RequestBody Message message) {
+    public Message updateLastMessage(@PathVariable String salon, @PathVariable Long id, @RequestBody Message message,
+                                     HttpServletResponse response) {
 
-        Message lastMessage = gestionMessage.getDernierMessage(salon);
-
-        if (lastMessage.getId().equals(message.getId())) {
-            lastMessage.setContenu(message.getContenu());
-            lastMessage.setDate(message.getDate());
-        } else {
-            // Throw an error
+        Message lastMessage = null;
+        try {
+            lastMessage = gestionMessage.updateLastMessage(salon, message);
+        } catch (DataException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
         }
 
         return lastMessage;
     }
 
+    /**
+     *
+     * Cette méthode corresponds à l'ennoncé: Supprimer le dernier message d'un salon (doit renvoyer une erreur
+     * si ce n'est pas le dernier message)
+     *
+     * @param salon le nom du salon
+     * @param id l'identificateur du message
+     * @param response le reponse http
+     */
     @RequestMapping(value = "/messages/{salon}/{id}", method = RequestMethod.DELETE,
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
@@ -70,8 +104,6 @@ public class MessageResource {
         }else{
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         }
-
     }
-
 
 }

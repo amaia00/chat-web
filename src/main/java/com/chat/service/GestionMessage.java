@@ -74,7 +74,7 @@ public interface GestionMessage {
     /**
      *
      * Cette méthode supprime l'utilisateur de la liste d'utilisateurs
-     * connectés
+     * connectés à la fin de la session
      *
      * @param pseudo le pseudo de l'utilisateur
      * @param salon le salon auquel l'utilisateur est connecté
@@ -87,7 +87,7 @@ public interface GestionMessage {
      * @param id identifique le message
      * @return Un message que correspond à l'id
      */
-    Message getMessage(Long id);
+    Message getMessage(Long id) throws DataException;
 
     /**
      * Cette méthode permet de supprimer un message
@@ -98,7 +98,7 @@ public interface GestionMessage {
     void deleteMessage(String salon, Long id);
 
     /**
-     * Trouve le salon pour l'utilisateur
+     * Retourne la liste d'utilisateurs qui sont dans l'instant solicité dans un salon
      *
      * @param user Utilisateur
      * @return liste avec les salons
@@ -125,4 +125,13 @@ public interface GestionMessage {
      * @throws DataException si le salon n'existe pas
      */
     List<Message> getLastMessagesAfterId(String salon, Long id) throws DataException;
+
+
+    /**
+     * @param salon le nom du salon
+     * @param message le message avec le nouveau contenu
+     * @return le message modifié
+     * @throws DataException retourne une exception si il ne s'agit pas du dernier message.
+     */
+    Message updateLastMessage(String salon, Message message) throws DataException;
 }

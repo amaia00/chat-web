@@ -5,7 +5,7 @@ package com.chat.util;
  * @version 1.0
  * @since 1.0 11/26/16.
  */
-public class Constantes {
+public class Constante {
 
     public static final String CORRECT_INSCRIPTION = "Ton inscription s'es realise correctement." +
             "Entrez avec votre pseudo.";
@@ -16,7 +16,11 @@ public class Constantes {
 
     public static final String MAIL_ALREADY_EXISTS = "Le mail que t'essaies d'utiliser est deja registre";
 
-    private Constantes(){
+    public static final String MSG_NOT_EXISTS = "The message doesn't exists";
+
+    public static final String MSG_ISNT_LAST = "The message is not the last";
+
+    private Constante(){
         /* On cache le constructeur parce que c'est une classe utilitaire */
     }
 }

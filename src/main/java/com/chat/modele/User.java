@@ -19,7 +19,7 @@ public class User {
         * par le post de addMessage */
     }
 
-    public User(java.lang.String pseudo, java.lang.String prenom, java.lang.String nom, java.lang.String mail) {
+    public User(String pseudo, String prenom, String nom, String mail) {
         this.pseudo = pseudo;
         this.prenom = prenom;
         this.nom = nom;
@@ -34,35 +34,35 @@ public class User {
         this.etat = etat;
     }
 
-    public java.lang.String getPseudo() {
+    public String getPseudo() {
         return pseudo;
     }
 
-    public void setPseudo(java.lang.String pseudo) {
+    public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
 
-    public java.lang.String getPrenom() {
+    public String getPrenom() {
         return prenom;
     }
 
-    public void setPrenom(java.lang.String prenom) {
+    public void setPrenom(String prenom) {
         this.prenom = prenom;
     }
 
-    public java.lang.String getNom() {
+    public String getNom() {
         return nom;
     }
 
-    public void setNom(java.lang.String nom) {
+    public void setNom(String nom) {
         this.nom = nom;
     }
 
-    public java.lang.String getMail() {
+    public String getMail() {
         return mail;
     }
 
-    public void setMail(java.lang.String mail) {
+    public void setMail(String mail) {
         this.mail = mail;
     }
 
