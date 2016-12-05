@@ -1,11 +1,12 @@
 package com.chat.controler;
 
-import com.chat.modele.GestionMessage;
-import com.chat.modele.GestionUtilisateur;
 import com.chat.modele.Message;
 import com.chat.modele.User;
+import com.chat.service.GestionMessage;
+import com.chat.service.GestionSalon;
+import com.chat.service.GestionUtilisateur;
 import com.chat.tp.Init;
-import com.chat.util.Constantes;
+import com.chat.util.Constante;
 import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -37,18 +39,23 @@ public class BackOfficeController {
 
     private GestionUtilisateur gestionUtilisateur;
 
+    private GestionSalon gestionSalon;
+
     /**
      *
      * Constructeur pour l'instantiation des classes
      *
      * @param gestionMessage l'instance de la gestion de messages
      * @param gestionUtilisateur l'instance de la gestion d'utilisateurs
+     * @param gestionSalon       l'instance de la gestions des salons
      */
     @Autowired
     public BackOfficeController(GestionMessage gestionMessage,
-                                GestionUtilisateur gestionUtilisateur) {
+                                GestionUtilisateur gestionUtilisateur,
+                                GestionSalon gestionSalon) {
         this.gestionMessage = gestionMessage;
         this.gestionUtilisateur = gestionUtilisateur;
+        this.gestionSalon = gestionSalon;
     }
 
     /**
@@ -72,7 +79,7 @@ public class BackOfficeController {
         try {
             gestionUtilisateur.addUser(pseudo, name, lastName, mail);
 
-            model.addAttribute("msg", Constantes.CORRECT_INSCRIPTION);
+            model.addAttribute("msg", Constante.CORRECT_INSCRIPTION);
             model.addAttribute("username", pseudo);
             return "redirect:/index.jsp";
 
@@ -99,7 +106,13 @@ public class BackOfficeController {
     @RequestMapping(value = "/{salon}", method = RequestMethod.GET)
     public String listMessages(ModelMap modelMap, @PathVariable String salon) {
 
-        List<Message> messages = gestionMessage.getMessages(salon);
+        List<Message> messages;
+        try {
+            messages = gestionMessage.getMessages(salon);
+        } catch (DataException e) {
+            LOGGER.log(Level.OFF, e.getMessage(), e);
+            messages = new ArrayList<>();
+        }
         modelMap.put("messages", messages);
 
         return "restreint/affichage";
@@ -120,9 +133,15 @@ public class BackOfficeController {
                                @PathVariable String salon,
                                @PathVariable Integer num) {
 
-        List<Message> messages = gestionMessage.getMessages(salon);
-        Message message = messages.get(num);
-        modelMap.put("message", message == null ? "" : message);
+        List<Message> messages;
+        try {
+            messages = gestionMessage.getMessages(salon);
+
+            Message message = messages.get(num);
+            modelMap.put("message", message == null ? "" : message);
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
 
         return "restreint/affichage";
     }
@@ -144,7 +163,15 @@ public class BackOfficeController {
         HttpSession session = request.getSession();
         String pseudo = session.getAttribute(Init.USERNAME).toString();
 
-        List<User> userList = gestionMessage.getUserList(salon, pseudo);
+
+        List<User> userList;
+        try{
+            userList = gestionMessage.getUserList(salon, pseudo);
+        }catch (DataException de){
+            LOGGER.log(Level.FINE, de.getMessage(), de);
+            userList = new ArrayList<>();
+            LOGGER.fine("Empty userList");
+        }
         modelMap.addAttribute("users", userList);
 
         return "restreint/listuser";
@@ -168,7 +195,7 @@ public class BackOfficeController {
                         Model model) {
 
         if (!gestionUtilisateur.existsUsername(pseudo)) {
-            model.addAttribute("msg", Constantes.USER_NOT_EXISTS);
+            model.addAttribute("msg", Constante.USER_NOT_EXISTS);
             return "redirect:/inscription.jsp";
         }
 
@@ -176,7 +203,17 @@ public class BackOfficeController {
         session.setAttribute(Init.USERNAME, pseudo);
         session.setAttribute(Init.CHANNEL, salon);
 
-        gestionMessage.addUserToSalon(pseudo,salon);
+        try {
+            gestionSalon.addSalon(salon);
+        } catch (DataException e) {
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
+        try {
+            gestionMessage.addUserToSalon(pseudo, salon);
+        }catch (DataException e ){
+            LOGGER.log(Level.FINE, e.getMessage(), e);
+        }
+
         gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.ONLINE);
 
         return "redirect:/restreint/interface.jsp";
@@ -194,12 +231,25 @@ public class BackOfficeController {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
-        String pseudo = session.getAttribute(Init.USERNAME).toString();
-        gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
-        session.invalidate();
+        String pseudo = getSessionAttribute(request, Init.USERNAME);
+        String salon = getSessionAttribute(request, Init.CHANNEL);
 
+        if (!"".equals(pseudo)) {
+            gestionUtilisateur.getUserByPseudo(pseudo).setEtat(User.Status.OFFLINE);
+            gestionMessage.removeUserToSalon(pseudo, salon);
+            session.invalidate();
+        }
 
         return "redirect:/index.jsp";
+    }
+
+    private String getSessionAttribute(HttpServletRequest request, String attribute){
+        HttpSession session = request.getSession();
+        if (session.getAttribute(attribute) != null){
+            return session.getAttribute(attribute).toString();
+        }else{
+            return "";
+        }
     }
 
 }

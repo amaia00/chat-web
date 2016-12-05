@@ -1,5 +1,7 @@
-package com.chat.modele;
+package com.chat.service;
 
+import com.chat.modele.User;
+import com.chat.rest.Utilisateur;
 import com.chat.util.DataException;
 
 /**
@@ -45,7 +47,36 @@ public interface GestionUtilisateur {
      * le salon indiqués
      *
      * @param pseudo le pseudo de l'utilisateur
-     * @return l'entite de l'utilisateur
+     * @return l'entité de l'utilisateur
      */
     User getUserByPseudo(String pseudo);
+
+    /**
+     * Permettre la modification d'un utilisateur
+     *
+     * @param pseudo   le nouveau pseudo pour l'utilisateur
+     * @param user objet d'utlisateur
+     * @return le user modifié
+     * @throws DataException si l'utilisateur n'exists pas
+     */
+    User updateUser(String pseudo, User user) throws DataException;
+
+
+    /**
+     * Cette méthode retourne l'utilisateur avec tous les salons où il a participé.
+     *
+     * @param pseudo le pseudo de l'utilisateur
+     * @return l'entité Utilisateur c-a-d l'utilisateur avec les salons associés
+     * @throws DataException si l'utilisateur n'existe pas
+     */
+    Utilisateur getAllChannelsByUser(String pseudo) throws DataException;
+
+    /**
+     *
+     * Cette méthode crée une instance utilisateur à partir de 'user'
+     *
+     * @param user objet d'utlisateur
+     * @return l'entité Utilisateur c-a-d l'utilisateur avec les salons associés
+     */
+    Utilisateur newUtilisateur(User user);
 }

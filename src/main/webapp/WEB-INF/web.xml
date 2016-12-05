@@ -62,7 +62,19 @@
         <url-pattern>/Affichage</url-pattern>
     </servlet-mapping>
 
+    <!-- Default root application context -->
+    <listener>
+        <listener-class>
+            org.springframework.web.context.ContextLoaderListener
+        </listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/applicationContext.xml</param-value>
+    </context-param>
 
+
+    <!-- Front-end controller -->
     <servlet>
         <servlet-name>back-office</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -72,23 +84,19 @@
             <param-value>/WEB-INF/back-office-servlet.xml</param-value>
         </init-param>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>back-office</servlet-name>
         <url-pattern>/back-office/*</url-pattern>
     </servlet-mapping>
-
-    <listener>
-        <listener-class>
-            org.springframework.web.context.ContextLoaderListener
-        </listener-class>
-    </listener>
-
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>/WEB-INF/applicationContext.xml</param-value>
-    </context-param>
-
+    <servlet>
+        <servlet-name>rest-api</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>rest-api</servlet-name>
+        <url-pattern>/api/*</url-pattern>
+    </servlet-mapping>
 
     <error-page>
         <error-code>404</error-code>

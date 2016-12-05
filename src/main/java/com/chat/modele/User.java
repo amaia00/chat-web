@@ -6,12 +6,18 @@ package com.chat.modele;
  * @since 1.0 11/23/16.
  */
 public class User {
-    public enum Status {ONLINE, OFFLINE};
+    public enum Status {ONLINE, OFFLINE}
+
     private String pseudo;
     private String prenom;
     private String nom;
     private String mail;
     private Status etat;
+
+    public User(){
+        /* On ajoute le constructeur par défaut por l'instantiation qui fait jackson avec le json quand on appel
+        * par le post de addMessage */
+    }
 
     public User(String pseudo, String prenom, String nom, String mail) {
         this.pseudo = pseudo;
@@ -58,5 +64,16 @@ public class User {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (super.equals(obj)) {
+            User u = (User) obj;
+            return this.getPseudo().equals(u.getPseudo());
+        } else {
+            return false;
+        }
     }
 }
