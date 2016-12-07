@@ -30,9 +30,10 @@
 <script type="text/javascript">
 
     function loadXMLDoc() {
-        var param="username="+document.getElementById("name").value+"&channel="+document.getElementById("name_salon").value;
-        console.log(param);
         var xmlhttp = new XMLHttpRequest();
+
+        var data = "username=" + document.getElementById("name").value + "&channel="
+                + document.getElementById("name_salon").value;
 
         xmlhttp.onreadystatechange = function() {
             if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
@@ -48,9 +49,10 @@
                 }
             }
         };
-        xmlhttp.open("POST", "http://localhost:8080/chat/back-office/login", true);
-        xmlhttp.send(param);
-        alert("gfgfgf");
+
+        xmlhttp.open("POST", "/chat/back-office/login");
+        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xmlhttp.send(data);
     }
 </script>
 <script type="text/javascript" src="../resources/js/jquery-3.1.1.min.js"></script>
