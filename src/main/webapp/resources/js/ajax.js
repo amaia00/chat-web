@@ -15,6 +15,7 @@
 var Ajax  = {
     JSON : 'JSON',
     XML : 'XML',
+    FORM_URL_ENCODE : 'FORM_URL_ENCODE',
     STATUS_OK : 200,
     STATUS_CREATED : 201,
     STATUS_NOT_CONTENT : 204,
@@ -33,11 +34,13 @@ var Ajax  = {
      *
      * */
 
-    sendPostRequest: function (url, params, accept, callback_succes, callback_error, asynchron) {
-        var headers = [{"header": "Content-Type", "value": "application/x-www-form-urlencoded"}];
+    sendPostRequest: function (url, params, accept, callback_succes, callback_error, asynchron, type) {
+        type = type || Ajax.FORM_URL_ENCODE;
+        var headers = [];
+        headers.push(this.getContentHeader(type));
         headers.push(this.getAcceptHeader(accept));
 
-        this.sendAjaxRequest("POST", params, url, headers, callback_succes, callback_error, asynchron);
+        this.sendAjaxRequest("POST", params, url, headers, callback_succes, callback_error, asynchron, type);
     },
 
     /*
@@ -53,10 +56,10 @@ var Ajax  = {
      *
      * */
 
-    sendGetRequest : function(data, url, callback_succes, callback_error, asynchron) {
+    sendGetRequest : function(url, params, accept, callback_succes, callback_error, asynchron) {
         var headers = [];
         headers.push(this.getAcceptHeader(accept));
-        this.sendAjaxRequest("POST", params, url, headers, callback_succes, callback_error, asynchron);
+        this.sendAjaxRequest("GET", params, url, headers, callback_succes, callback_error, asynchron);
     },
 
     /*
@@ -72,8 +75,10 @@ var Ajax  = {
      *
      * */
 
-    sendPutRequest : function(data, url, callback_succes, callback_error, asynchron) {
+    sendPutRequest : function(url, params, accept, callback_succes, callback_error, asynchron, type) {
+        type = type || Ajax.FORM_URL_ENCODE;
         var headers = [];
+        headers.push(this.getContentHeader(type));
         headers.push(this.getAcceptHeader(accept));
 
         this.sendAjaxRequest("PUT", params, url, headers, callback_succes, callback_error, asynchron);
@@ -92,7 +97,7 @@ var Ajax  = {
      *
      * */
 
-    sendDeleteRequest : function (data, url, callback_succes, callback_error, asynchron) {
+    sendDeleteRequest : function (url, params, accept, callback_succes, callback_error, asynchron) {
         var headers = [];
         headers.push(this.getAcceptHeader(accept));
 
@@ -112,9 +117,9 @@ var Ajax  = {
      * @param asynchron : true ou false
      *
      * */
-    sendAjaxRequest : function (method, data, url, headers, callback_succes, callback_error, asynchron) {
+    sendAjaxRequest : function (method, data, url, headers, callback_succes, callback_error, asynchron, type) {
         var xmlhttp = new XMLHttpRequest();
-
+        type = type | this.URL_ENCODE;
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == XMLHttpRequest.DONE) {
                 var STATUS_ACCEPTED = [Ajax.STATUS_OK, Ajax.STATUS_CREATED, Ajax.STATUS_NOT_CONTENT];
@@ -135,29 +140,55 @@ var Ajax  = {
         }
 
         var params = '';
-        var first = false;
-        for (var j in data) {
-            if (first === true)
-                params += '&';
+        if (type == Ajax.FORM_URL_ENCODE) {
+            var first = false;
+            for (var j in data) {
+                if (first === true)
+                    params += '&';
+                params += data[j].key + "=" + data[j].value;
+                first = true;
+            }
 
-            params += data[j].key + "=" + data[j].value;
-            first = true;
+            if (params)
+                params = encodeURI(params);
+        } else {
+            params = JSON.stringify(data);
         }
 
-        xmlhttp.send(encodeURI(params));
+        //xmlhttp.setRequestHeader("Content-length", params.length);
+
+        xmlhttp.send(params);
     },
 
     /*
-    * Retourne le header pour accepter soit JSON soit XML
-    *
-    * @param accept: JSON ou XML
-    * */
+     * Retourne le header pour accepter soit JSON soit XML
+     *
+     * @param accept: JSON ou XML
+     * */
     getAcceptHeader : function (accept) {
         var obj;
-        if (accept === JSON) {
+        if (accept === Ajax.JSON) {
             obj = {header: "accept", value: "application/json"};
         } else {
             obj = {header: "accept", value: "application/xml"};
+        }
+
+        return obj;
+    },
+
+    /*
+     * Retourne le header pour content type soit FORM_URL_ENCODE soit JSON soit XML
+     *
+     * @param type: FORM_URL_ENCODE ou JSON ou XML
+     * */
+    getContentHeader : function (type) {
+        var obj;
+        if (type == Ajax.FORM_URL_ENCODE){
+            obj = {"header": "Content-Type", "value": "application/x-www-form-urlencoded"};
+        } else if (type == Ajax.JSON) {
+            obj = {"header": "Content-Type", "value": "application/json"};
+        } else {
+            obj = {"header": "Content-Type", "value": "application/xml"};
         }
 
         return obj;
