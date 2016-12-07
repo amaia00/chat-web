@@ -29,33 +29,27 @@
 </div>
 <script type="text/javascript">
 
+    function succes(data) {
+        console.log("succes");
+        console.log(data);
+    }
+
+    function error() {
+        console.log("error");
+    }
+
     function loadXMLDoc() {
-        var xmlhttp = new XMLHttpRequest();
 
-        var data = "username=" + document.getElementById("name").value + "&channel="
-                + document.getElementById("name_salon").value;
+        // function sendPostRequest(url, params, accept, callback_succes, callback_error, asynchron)
+        var params = [];
+        params.push({key: "username", value: document.getElementById("name").value});
+        params.push({key: "channel", value: document.getElementById("name_salon").value});
 
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE ) {
-                if (xmlhttp.status == 200) {
-                    document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
-                    console.log(xmlhttp.responseText);
-                }
-                else if (xmlhttp.status == 400) {
-                    alert('There was an error 400');
-                }
-                else {
-                    alert('something else other than 200 was returned');
-                }
-            }
-        };
-
-        xmlhttp.open("POST", "/chat/back-office/login");
-        xmlhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xmlhttp.send(data);
+        Ajax.sendPostRequest('/chat/back-office/login', params, Ajax.JSON, succes, error, true);
     }
 </script>
 <script type="text/javascript" src="../resources/js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="../resources/js/script.js"></script>
+<script type="text/javascript" src="../resources/js/ajax.js"></script>
 </body>
 </html>
