@@ -1,34 +1,37 @@
 /**
- * Created by sofiaa faddi on 09/12/2016.
+ * @author sofiaa faddi
+ * @version 1.0
+ * @since 1.0 09/12/2016.
  */
 var App = {};
- var Username = "";
-    function succes(data) {
-        if (data.search("Inscrivez vous en remplissons ce formulaire") != -1) {
-            var inscription_ajax = confirm("Vous allez etre redirigé vers la page d'inscription , cliquer sur confirmer");
-            if (inscription_ajax != false) {
-                window.location = "../inscription.jsp";
-            }
-            else {
-                $('.cn_pr').append("Cliquer sur le lien pour vous inscrire <a href='../inscription.jsp' class='btn btn-primary but' >Inscription</a> ")
-            }
-        } else {
-            Username=document.getElementById("name").value;
-            console.log(Username);
-            window.location = "../AjaxHtml/profil.html?username="+Username;
+var Username = "";
+function succes(data) {
+    if (data.search("Inscrivez vous en remplissons ce formulaire") != -1) {
+        var inscription_ajax = confirm("Vous allez etre redirigé vers la page d'inscription , cliquer sur confirmer");
+        if (inscription_ajax != false) {
+            window.location = "../inscription.jsp";
         }
-
+        else {
+            $('.cn_pr').append("Cliquer sur le lien pour vous inscrire <a href='../inscription.jsp' class='btn btn-primary but' >Inscription</a> ")
+        }
+    } else {
+        Username = document.getElementById("name").value;
+        console.log(Username);
+        window.location = "../AjaxHtml/profil.html?username=" + Username;
     }
-function succesGetUser (data) {
+
+}
+function succesGetUser(data) {
     var user = JSON.parse(data);
-    $(".listes_info").append("<div class='info'>Pseudo : <span>"+ user.pseudo+"</span></div> <div class='info'>Prenom: <span>"+ user.prenom+"</span></div><div class='info'>Nom: <span>"+ user.nom+"</span></div><div class='info'>Email: <span>"+ user.mail+"</span></div><div class='info'>Etat: <span>"+ user.etat+"</span></div>")
 
-
+    /* Profile information */
+    $('h3[name=pseudo]').append(user.pseudo);
+    $("p[name=donnees]").html(user.prenom + ' ' + user.nom + '<br/>' + user.mail);
 
     /* liste de salons */
     for (var i in user.salons) {
-        $(".liste_salons ul").append("<li>salon" + i + " name :" + user.salons[i].name+"</li>");
-        console.log("salon " + i + " lastMessage :" + user.salons[i].lastMessage);
+        if (user.salons.hasOwnProperty(i))
+            $("div[name=liste_salons]").append('<a href="#" class="list-group-item">' + user.salons[i].name + '</a>');
     }
 }
 
@@ -48,11 +51,15 @@ function succesAddMessage(data) {
 }
 
 function succesModifyUsername(data) {
-    var result = data;
-    console.log(data);
+    var user = JSON.parse(data);
+    $("#changeUsername").hide();
+
+    var newURL = window.location.protocol + "//" + window.location.host + "/" + window.location.pathname
+        + '?username=' + user.pseudo;
+    location.replace(newURL);
 }
 
-function succesDelete(data){
+function succesDelete(data) {
     console.log("delete : " + data);
 }
 
@@ -73,7 +80,7 @@ function loadXMLDoc() {
 function getUser() {
     var params = [];
     var username = window.location.search.substring(1).split("=");
-    var pseudo= username[1]
+    var pseudo = username[1]
     Ajax.sendGetRequest('/chat/api/users/' + pseudo, params, Ajax.JSON, succesGetUser, error, true);
 }
 
@@ -83,34 +90,40 @@ function getMessagesBySalon() {
     Ajax.sendGetRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesGetMessages, error, true);
 }
 
-function modifyUsername(){
-    var new_username = 'amaia-nazabal'; /* ici le nouveau pseudo*/
+function modifyUsername() {
+    var new_username = $("#username").val();
+    /* ici le nouveau pseudo*/
     var params = {
-        pseudo: document.getElementById("name").value
+        pseudo: $('h3[name=pseudo]').html()
     }
 
     Ajax.sendPutRequest('/chat/api/users/' + new_username, params, Ajax.JSON, succesModifyUsername, error, true, Ajax.JSON);
 }
 
-function deleteChannel(){
+function deleteChannel() {
     var params = [];
     var salon = document.getElementById("name_salon").value;
     Ajax.sendDeleteRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesDelete, error, true);
 }
 
-function addMessage(){
+function addMessage() {
     var salon = document.getElementById("name_salon").value;
     var params = {
         id: 3,
         contenu: "nouveau-message",
-        user : {
-            pseudo : "amaianazabal"
+        user: {
+            pseudo: "amaianazabal"
         },
-        date : 1480958743859
+        date: 1480958743859
     };
     Ajax.sendPostRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
 
 
+}
+
+function newChannel() {
+    var salon = $("#name_salon").val();
+    console.log("nouveau salon " + salon);
 }
 
 console.log("-----------");

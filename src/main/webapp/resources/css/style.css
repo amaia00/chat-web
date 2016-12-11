@@ -192,7 +192,7 @@ iframe {
 	text-align: center;
 	display: block;
 }
-.bg-success, .bg-danger {
+.bg-success, .bg-danger, .bg-warning {
 	padding:10px;
 	color:#333;
 }
@@ -214,4 +214,7 @@ iframe {
 .profil {
 	overflow: hidden;
 	margin: 50px 0;
+}
+.profil p{
+	color: gray;
 }
