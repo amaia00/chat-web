@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile utilisateur</title>
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../resources/css/style.css" rel="stylesheet">
+</head>
+<body onload="getUser()">
+<div class="container-fluid">
+    <div class="profil">
+        <div class="col-xs-12 col-md-offset-4  col-lg-offset-4  col-sm-offset-4 col-md-2 col-sm-2 col-lg-2">
+            <img src="../resources/images/default-avatar.png"  width="206"/>
+        </div>
+        <div class="col-xs-12 col-md-2 col-sm-2 col-lg-2">
+            <div class="listes_info"></div>
+        </div>
+        <div class="col-xs-12 col-md-12 col-sm-12 col-lg-12">
+            <div id="liste_salons"><h4>Listes des salons</h4>
+                <p>Cliquer pour y acceder</p>
+                <ul>
+
+                </ul>
+                <button data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Ajouter un salon</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">#</span>
+                    <input type="text" autofocus class="form-control" placeholder="channel" name="channel"
+                           aria-describedby="basic-addon2" id="name_salon" required="required">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <button type="button" class="btn btn-primary">Enregistrer</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<script type="text/javascript" src="../resources/js/jquery-3.1.1.min.js"></script>
+<script type="text/javascript" src="../resources/js/script.js"></script>
+<script type="text/javascript" src="../resources/js/ajax.js"></script>
+<script type="text/javascript" src="../resources/js/ajax_func.js"></script>
+
+</body>
+</html>
