@@ -119,18 +119,20 @@ var Ajax  = {
      * */
     sendAjaxRequest : function (method, data, url, headers, callback_succes, callback_error, asynchron, type) {
         var xmlhttp = new XMLHttpRequest();
-        type = type | this.URL_ENCODE;
+        type = type || this.URL_ENCODE;
+
+
         xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-                var STATUS_ACCEPTED = [Ajax.STATUS_OK, Ajax.STATUS_CREATED, Ajax.STATUS_NOT_CONTENT];
-                if (STATUS_ACCEPTED.indexOf(xmlhttp.status) >= 0) {
-                    var data = xmlhttp.responseText;
-                    callback_succes(data);
-                } else {
+           if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+              var STATUS_ACCEPTED = [Ajax.STATUS_OK, Ajax.STATUS_CREATED, Ajax.STATUS_NOT_CONTENT];
+             if (STATUS_ACCEPTED.indexOf(xmlhttp.status) >= 0) {
+                   var data = xmlhttp.responseText;
+                 callback_succes(data);
+               } else {
                     callback_error();
                 }
-            }
-        };
+           }
+      };
 
         /* On l'appel de manière asyncrone */
         xmlhttp.open(method, url, asynchron);
@@ -140,13 +142,16 @@ var Ajax  = {
         }
 
         var params = '';
+
         if (type == Ajax.FORM_URL_ENCODE) {
             var first = false;
+
             for (var j in data) {
                 if (first === true)
                     params += '&';
                 params += data[j].key + "=" + data[j].value;
                 first = true;
+                console.log(params);
             }
 
             if (params)

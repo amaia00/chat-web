@@ -9,13 +9,13 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="col-xs-12 col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-lg-offset-2 col-lg-8" method="POST">
+        <div class="col-xs-12 col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-lg-offset-2 col-lg-8 cn_pr">
             <div class="image_accueil"><img alt="Image de bienvenue" src="../resources/images/chatimage.png"></div>
             <h2>Bienvenue sur le chat en ligne</h2>
             <div class="input-group">
                 <span class="input-group-addon" id="basic-addon1">@</span>
                 <input type="text" autofocus class="form-control" placeholder="Pseudo" name="username"
-                               aria-describedby="basic-addon1" id="name" required="required">
+                       aria-describedby="basic-addon1" id="name" required="required">
             </div>
             <div class="input-group">
                         <span class="input-group-addon" id="basic-addon2"><i
@@ -23,107 +23,14 @@
                 <input id="name_salon" type="text" class="form-control" placeholder="salon" name="channel"
                        aria-describedby="basic-addon2"   required="required">
             </div>
-            <button type="submit" class="btn btn-primary" onclick="deleteChannel()">Se connecter</button>
+            <button type="submit" class="btn btn-primary" onclick="loadXMLDoc()">Se connecter</button>
         </div>
     </div>
 </div>
-<script type="text/javascript">
-
-    function succesGetUser (data) {
-        var user = JSON.parse(data);
-
-        console.log("pseudo : " + user.pseudo);
-        console.log("prenom : " + user.prenom);
-        console.log("nom : " + user.nom);
-        console.log("mail : " + user.mail);
-        console.log("etat : " + user.etat);
-
-        /* liste de salons */
-        for (var i in user.salons) {
-            console.log("salon " + i + " name :" + user.salons[i].name);
-            console.log("salon " + i + " lastMessage :" + user.salons[i].lastMessage);
-        }
-    }
-
-    function succesGetMessages(data) {
-        var messages = JSON.parse(data);
-
-        for (var i in messages.messages) {
-            console.log("Message " + i + " : " + messages.messages[i].contenu);
-            console.log("Message " + i + " : " + messages.messages[i].hourFormatted);
-            console.log("Message " + i + " : " + messages.messages[i].user.pseudo);
-        }
-    }
-
-    function succesAddMessage(data) {
-        var result = data;
-        console.log(data);
-    }
-
-    function succesModifyUsername(data) {
-        var result = data;
-        console.log(data);
-    }
-
-    function succesDelete(data){
-        console.log("delete : " + data);
-    }
-
-    function error() {
-        console.log("error");
-    }
-
-    function loadXMLDoc() {
-        var params = [];
-        params.push({key: "username", value: document.getElementById("name").value});
-        params.push({key: "channel", value: document.getElementById("name_salon").value});
-
-        Ajax.sendPostRequest('/chat/back-office/login', params, Ajax.JSON, succes, error, true);
-    }
-
-    function getUser() {
-        var params = [];
-        var pseudo = document.getElementById("name").value;
-        Ajax.sendGetRequest('/chat/api/users/' + pseudo, params, Ajax.JSON, succesGetUser, error, true);
-    }
-
-    function getMessagesBySalon() {
-        var params = [];
-        var salon = document.getElementById("name_salon").value;
-        Ajax.sendGetRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesGetMessages, error, true);
-    }
-
-    function modifyUsername(){
-        var new_username = 'amaia-nazabal'; /* ici le nouveau pseudo*/
-        var params = {
-            pseudo: document.getElementById("name").value
-        }
-
-        Ajax.sendPutRequest('/chat/api/users/' + new_username, params, Ajax.JSON, succesModifyUsername, error, true, Ajax.JSON);
-    }
-
-    function deleteChannel(){
-        var params = [];
-        var salon = document.getElementById("name_salon").value;
-        Ajax.sendDeleteRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesDelete, error, true);
-    }
-
-    function addMessage(){
-        var salon = document.getElementById("name_salon").value;
-        var params = {
-            id: 3,
-            contenu: "nouveau-message",
-            user : {
-                pseudo : "amaianazabal"
-            },
-            date : 1480958743859
-        };
-        Ajax.sendPostRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
-    }
-
-</script>
 <script type="text/javascript" src="../resources/js/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="../resources/js/script.js"></script>
 <script type="text/javascript" src="../resources/js/ajax.js"></script>
+<script type="text/javascript" src="../resources/js/ajax_func.js"></script>
+
 </body>
 </html>

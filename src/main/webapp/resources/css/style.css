@@ -196,3 +196,22 @@ iframe {
 	padding:10px;
 	color:#333;
 }
+.but {
+	display: inline-block;
+}
+.listes_info {
+	width: 200px;
+	background: #fff;
+	border: 1px solid;
+}
+.listes_info .info {
+	padding: 10px 20px;
+	border-bottom: 1px dashed;
+}
+.listes_info .info:last-child {
+	border-bottom: 0;
+}
+.profil {
+	overflow: hidden;
+	margin: 50px 0;
+}
