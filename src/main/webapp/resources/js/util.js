@@ -71,7 +71,7 @@ function getCookie(cookie_name) {
             return c.substring(name.length,c.length);
         }
     }
-    return "";
+    return undefined;
 }
 
 /**
@@ -94,4 +94,28 @@ function setCookie(cookie_name, cookie_value, minutes) {
  */
 function reloadPage(){
     location.reload()
+}
+
+/**
+ * Cette methode redirige vers l'index
+ */
+function retournIndex() {
+    location.replace(getPath());
+}
+
+/**
+ * Cette méthode vérifie que la cookie est déjà crée dans la page
+ * Source: http://www.w3schools.com/js/js_cookies.asp
+ *
+ * @returns {boolean} si la cookie a un valeur
+ */
+function checkCookie() {
+    var username = getCookie("username");
+
+    if (username != '') {
+        return true;
+    } else {
+        retournIndex();
+    }
+    return false;
 }

@@ -70,15 +70,17 @@ function errorGetMessagesBySalon(status) {
  * Si il arrive a envoyer le message appel le methode succesAddMessage
  */
 function addMessage() {
-    var salon = getQueryParams()['salon'];
-    var params = {
-        id: 3,
-        contenu: $('#message-content').val(),
-        user: {
-            pseudo: getCookie("username")
-        }
-    };
-    Ajax.sendPostRequest('../api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
+    if (checkCookie()) {
+        var salon = getQueryParams()['salon'];
+        var params = {
+            id: 3,
+            contenu: $('#message-content').val(),
+            user: {
+                pseudo: getCookie("username")
+            }
+        };
+        Ajax.sendPostRequest('../api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
+    }
 }
 
 /**
@@ -87,7 +89,12 @@ function addMessage() {
 function succesAddMessage(data) {
     var message = JSON.parse(data);
     addMessageHtml(message);
+
     $("#message-content").val("");
+
+    removeDeleteEditOption(message.id);
+
+    DERNIER_ID_MESSAGE = message.id;
 }
 
 /**
@@ -115,7 +122,6 @@ function getLastMessagesAfterId() {
 function succesGetLastMessagesAfterId(data) {
     /* Si data est vide ça veut dire que la reponse est un 304 */
     if (data) {
-        console.log(data);
 
         var messages = JSON.parse(data);
         var i;
@@ -225,7 +231,7 @@ function addDeleteEditHTML(id) {
  * @param id id du message auquel sera assigne les options de delete et update
  */
 function removeDeleteEditOption(id) {
-    $('#scroll_body div[class=block_message]> a[class=last_option]').each(function () {
+    $('#scroll_body div.block_message > a.last_option').each(function () {
         $(this).remove();
     });
     addDeleteEditHTML(id);

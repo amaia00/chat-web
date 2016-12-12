@@ -3,14 +3,9 @@
  * @version 1.0
  * @since 1.0 09/12/2016.
  *
- * TODO mofifier /chat on ne sait pas ou va etre deploye l'app
  * TODO check cookie
  */
 var Username = "";
-
-console.log("pathname");
-console.log(location.pathname);
-console.log(cleanURL(location.pathname));
 
 function succes(data) {
     if (data.search("Inscrivez vous en remplissons ce formulaire") != -1) {
@@ -41,7 +36,7 @@ function goChat(salon) {
  * Il initialise le timer pour s'executer chaque 5 seconds, en appelant
  * la fonction getLastMessagesAfterId (fichier message.js)
  */
-function initTimer(){
+function initTimer() {
     setInterval(getLastMessagesAfterId, 5000);
 }
 
@@ -68,8 +63,8 @@ function logout() {
  */
 function newChannel() {
     var params = [];
-    params.push({key : "salon", value: $("#name_salon").val()});
-    params.push({key : "pseudo", value: getCookie("username")});
+    params.push({key: "salon", value: $("#name_salon").val()});
+    params.push({key: "pseudo", value: getCookie("username")});
 
     Ajax.sendPostRequest('../api/salons', params, Ajax.JSON, successNewChannel, error, true, Ajax.FORM_URL_ENCODE);
 }
@@ -78,18 +73,20 @@ function newChannel() {
  * Cette méthode récupere le nom du salon et envoie à l'utilisateur à la nouvelle page
  * pour voir les messages en appelant la fonction goChat
  */
-function successNewChannel(){
+function successNewChannel() {
     var salon = $("#name_salon").val();
     goChat(salon);
 }
 
 /**
- * Cette fonction change la source du iframe pour envoyer le salon
+ * Cette fonction verifie que change la source du iframe pour envoyer le salon
  */
-function setURL() {
-    var path = getPath() + 'affichage.html?salon=';
-    var param = getQueryParams();
-    $('#messages').attr('src', path + param['salon'])
+function verifierURL() {
+    if (checkCookie()) {
+        var path = getPath() + 'affichage.html?salon=';
+        var param = getQueryParams();
+        $('#messages').attr('src', path + param['salon'])
+    }
 }
 
 /**

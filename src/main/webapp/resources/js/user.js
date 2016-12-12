@@ -6,7 +6,6 @@
  * @since 1.0 12/12/16.
  */
 
-
 /**
  *
  * Cette méthode appel le service getUser de l'API REST et demande d'envoyer le réponse à la
@@ -14,16 +13,17 @@
  */
 function getUser() {
     var params = [];
-    var pseudo = getQueryParams()["username"];
+    var pseudo = getQueryParams()["username"] || getCookie("username");
 
     if (typeof pseudo == 'undefined') {
-        pseudo = getCookie("username");
-    } else {
-        /*TODO traitement d'erreur ou aller au index*/
-
+        retournIndex();
     }
 
-    Ajax.sendGetRequest('../api/users/' + pseudo, params, Ajax.JSON, succesGetUser, error, true);
+    Ajax.sendGetRequest('../api/users/' + pseudo, params, Ajax.JSON, succesGetUser, errorGetUser, true);
+}
+
+function errorGetUser() {
+    retournIndex();
 }
 
 /**
