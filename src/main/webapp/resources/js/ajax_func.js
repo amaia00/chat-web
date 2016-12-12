@@ -34,6 +34,7 @@ function goChat(salon) {
  * et la fonction errorGetMessages sinon
  */
 function getMessagesBySalon() {
+
     var params = [];
     var salon = getQueryParams()['salon'];
     Ajax.sendGetRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesGetMessagesBySalon, errorGetMessagesBySalon, true);
@@ -78,7 +79,7 @@ function succesGetMessagesBySalon(data) {
 
     }
 
-    scrollWindows();
+    $('#scroll_body').scrollTop(300);
 }
 /**
  * Cette méthode montre un text-area pour que l'utilisateur puisse modifier le message
