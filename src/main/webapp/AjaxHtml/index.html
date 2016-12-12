@@ -13,19 +13,14 @@
             <div class="image_accueil"><img alt="Image de bienvenue" src="../resources/images/chatimage.png"></div>
             <h2>Bienvenue sur le chat en ligne</h2>
             <p class="bg-warning">Si tu n'es pas encore inscrit, clic <a href="../inscription.jsp">ici</a>. </p>
-
-            <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">@</span>
-                <input type="text" autofocus class="form-control" placeholder="Pseudo" name="username"
-                       aria-describedby="basic-addon1" id="name" required="required">
-            </div>
-            <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2"><i
-                                class="glyphicon glyphicon-home"></i></span>
-                <input id="name_salon" type="text" class="form-control" placeholder="salon" name="channel"
-                       aria-describedby="basic-addon2"   required="required">
-            </div>
-            <button type="submit" class="btn btn-primary" onclick="loadXMLDoc()">Se connecter</button>
+            <form action="javascript:login()">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">@</span>
+                    <input type="text" autofocus class="form-control" placeholder="Pseudo" name="username"
+                           aria-describedby="basic-addon1" id="name" required="required">
+                </div>
+                <button type="submit" class="btn btn-primary" onclick="login()">Se connecter</button>
+            </form>
         </div>
     </div>
 </div>

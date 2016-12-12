@@ -47,9 +47,7 @@ $(document).ready(function () {
 	$(window).on('load',function()
 	{
 		var contents = $('#scroll_body').height();
-		console.log(contents)
 		$(".bgelement").scrollTop(contents);
 
 	});
-
 });

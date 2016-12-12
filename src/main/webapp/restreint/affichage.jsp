@@ -115,7 +115,7 @@
         </c:forEach>
     </c:when>
     <c:otherwise>
-        <h4>Binevenue au salon ${salon} Dorenavant vous avez la possibilité de discuter avec tous les
+        <h4>Bienvenue au salon ${salon} Dorenavant vous avez la possibilité de discuter avec tous les
         membres du salon </h4>
     </c:otherwise>
 </c:choose>

@@ -19,7 +19,8 @@ var Ajax  = {
     STATUS_OK : 200,
     STATUS_CREATED : 201,
     STATUS_NOT_CONTENT : 204,
-    STATUS_ACCEPTED : [this.STATUS_OK, this.STATUS_CREATED, this.STATUS_NOT_CONTENT],
+    STATUS_NOT_FOUND: 404,
+    STATUS_INTERNAL_SERVER_ERROR : 500,
 
     /*
      * Function for post request
@@ -129,7 +130,7 @@ var Ajax  = {
                    var data = xmlhttp.responseText;
                  callback_succes(data);
                } else {
-                    callback_error();
+                    callback_error(xmlhttp.status);
                 }
            }
       };
@@ -159,8 +160,6 @@ var Ajax  = {
         } else {
             params = JSON.stringify(data);
         }
-
-        //xmlhttp.setRequestHeader("Content-length", params.length);
 
         xmlhttp.send(params);
     },

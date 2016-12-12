@@ -218,3 +218,18 @@ iframe {
 .profil p{
 	color: gray;
 }
+
+div.messages{
+	width: 100%;
+	height: 60%;
+	margin-top: 1%;
+	border: 0;
+}
+a + a {
+	margin-left: 15px;
+}
+
+.marge {
+	margin: 10px !important;
+	display: inline-block !important;
+}

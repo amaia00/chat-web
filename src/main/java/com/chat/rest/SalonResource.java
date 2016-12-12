@@ -1,8 +1,11 @@
 package com.chat.rest;
 
 import com.chat.modele.Message;
+import com.chat.modele.Salon;
+import com.chat.modele.User;
 import com.chat.service.GestionMessage;
 import com.chat.service.GestionSalon;
+import com.chat.service.GestionUtilisateur;
 import com.chat.util.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -24,11 +27,14 @@ public class SalonResource {
 
     private GestionSalon gestionSalon;
     private GestionMessage gestionMessage;
+    private GestionUtilisateur gestionUtilisateur;
 
     @Autowired
-    public SalonResource(GestionSalon gestionSalon, GestionMessage gestionMessage) {
+    public SalonResource(GestionSalon gestionSalon, GestionMessage gestionMessage,
+                         GestionUtilisateur gestionUtilisateur) {
         this.gestionSalon = gestionSalon;
         this.gestionMessage = gestionMessage;
+        this.gestionUtilisateur = gestionUtilisateur;
     }
 
 
@@ -144,6 +150,35 @@ public class SalonResource {
     }
 
     /**
+     *
+     * Cette méthode permet ajouter un nouveau salon et l'associer avec un utilisateur
+     *
+     * @param salon le nom du salon
+     * @param pseudo le pseudo de l'utilisateur
+     * @param response reponse http
+     */
+    @RequestMapping(value = "/salons",
+            method = RequestMethod.POST,
+            produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @ResponseBody
+    public void addSalon(@RequestParam(value = "salon") String salon,
+                         @RequestParam(value = "pseudo") String pseudo,
+                         HttpServletResponse response){
+        try {
+            gestionSalon.addSalon(salon);
+            Salon channel = gestionSalon.getSalonByName(salon);
+            gestionUtilisateur.addSalonUser(channel, pseudo);
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+        } catch (DataException e) {
+            LOGGER.log(Level.WARNING, e.getMessage(), e);
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        } catch (Exception e){
+            LOGGER.log(Level.SEVERE, "Can't remove salon", e);
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    /**
      * Cette méthode correspond à l'ennoncé: Ajouter un message
      *
      * @param salon Nom du salon
@@ -157,7 +192,8 @@ public class SalonResource {
                               HttpServletResponse response) {
         Message ret = null;
         try {
-                ret = gestionMessage.addMessage(message.getContenu(), message.getUser(), salon);
+                User user = gestionUtilisateur.getUserByPseudo(message.getUser().getPseudo());
+                ret = gestionMessage.addMessage(message.getContenu(), user, salon);
             response.setStatus(HttpServletResponse.SC_CREATED);
         } catch (DataException e) {
             /* Si on ne trouve pas le salon indique dans le path */
