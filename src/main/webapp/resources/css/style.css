@@ -71,7 +71,7 @@ iframe {
 }
 #mess .panel-body {
 	overflow: scroll;
-	height: 360px;
+	height: 300px;
 }
 .block_message{
 	border-top:1px dashed #000;
