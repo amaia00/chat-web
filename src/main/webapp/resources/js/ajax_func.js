@@ -4,10 +4,13 @@
  * @since 1.0 09/12/2016.
  *
  * TODO mofifier /chat on ne sait pas ou va etre deploye l'app
+ * TODO check cookie
  */
-var App = {};
-var DERNIER_ID_MESSAGE;
 var Username = "";
+
+console.log("pathname");
+console.log(location.pathname);
+console.log(cleanURL(location.pathname));
 
 function succes(data) {
     if (data.search("Inscrivez vous en remplissons ce formulaire") != -1) {
@@ -35,16 +38,11 @@ function goChat(salon) {
 }
 
 /**
- * Il initialise le timer pour s'executer chaque 5 seconds.
+ * Il initialise le timer pour s'executer chaque 5 seconds, en appelant
+ * la fonction getLastMessagesAfterId (fichier message.js)
  */
 function initTimer(){
     setInterval(getLastMessagesAfterId, 5000);
-}
-
-
-
-function succesDelete(data) {
-    console.log("delete : " + data);
 }
 
 function error() {
@@ -63,37 +61,40 @@ function logout() {
     location.replace(newURL);
 }
 
-function deleteChannel() {
-    var params = [];
-    var salon = document.getElementById("name_salon").value;
-    Ajax.sendDeleteRequest('/chat/api/salons/' + salon, params, Ajax.JSON, succesDelete, error, true);
-}
-
 /**
- *
+ * Cette fonction créé un nouveau salon quand l'utilisateur en appelant
+ * le service de l'API REST qui de plus associé le salon avec l'utilisateur.
+ * Si cette fonction fini correctement, elle appel la fonction successNewChannel (plus bas)
  */
 function newChannel() {
     var params = [];
     params.push({key : "salon", value: $("#name_salon").val()});
     params.push({key : "pseudo", value: getCookie("username")});
 
-    Ajax.sendPostRequest('/chat/api/salons', params, Ajax.JSON, successNewChannel, error, true, Ajax.FORM_URL_ENCODE);
+    Ajax.sendPostRequest('../api/salons', params, Ajax.JSON, successNewChannel, error, true, Ajax.FORM_URL_ENCODE);
 }
 
 /**
- *
+ * Cette méthode récupere le nom du salon et envoie à l'utilisateur à la nouvelle page
+ * pour voir les messages en appelant la fonction goChat
  */
 function successNewChannel(){
     var salon = $("#name_salon").val();
     goChat(salon);
 }
 
+/**
+ * Cette fonction change la source du iframe pour envoyer le salon
+ */
 function setURL() {
     var path = getPath() + 'affichage.html?salon=';
     var param = getQueryParams();
     $('#messages').attr('src', path + param['salon'])
 }
 
+/**
+ *
+ */
 function scrollWindows() {
     var contents = $('#scroll_body').height();
     $(".bgelement").scrollTop(contents);

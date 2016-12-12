@@ -107,11 +107,15 @@ public class SalonResource {
             produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @ResponseBody
     public Messages getLastMessagesAfterId(@PathVariable String salon,
-                                                 @PathVariable Long idMessage, HttpServletResponse response) {
+                                           @PathVariable Long idMessage, HttpServletResponse response) {
         Messages messages = new Messages();
 
         try {
             messages.setMessages(gestionMessage.getLastMessagesAfterId(salon, idMessage));
+
+            if (messages.getMessages().isEmpty()){
+                response.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
+            }
 
         } catch (DataException e) {
             LOGGER.log(Level.WARNING, "Can't retrieve the messages ", e);

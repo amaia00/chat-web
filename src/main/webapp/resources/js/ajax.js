@@ -19,6 +19,7 @@ var Ajax  = {
     STATUS_OK : 200,
     STATUS_CREATED : 201,
     STATUS_NOT_CONTENT : 204,
+    STATUS_NOT_MODIFIED : 304,
     STATUS_NOT_FOUND: 404,
     STATUS_INTERNAL_SERVER_ERROR : 500,
 
@@ -125,7 +126,7 @@ var Ajax  = {
 
         xmlhttp.onreadystatechange = function () {
            if (xmlhttp.readyState == XMLHttpRequest.DONE) {
-              var STATUS_ACCEPTED = [Ajax.STATUS_OK, Ajax.STATUS_CREATED, Ajax.STATUS_NOT_CONTENT];
+              var STATUS_ACCEPTED = [Ajax.STATUS_OK, Ajax.STATUS_CREATED, Ajax.STATUS_NOT_CONTENT, Ajax.STATUS_NOT_MODIFIED];
              if (STATUS_ACCEPTED.indexOf(xmlhttp.status) >= 0) {
                    var data = xmlhttp.responseText;
                  callback_succes(data);

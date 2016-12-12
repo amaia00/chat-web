@@ -23,7 +23,7 @@ function getUser() {
 
     }
 
-    Ajax.sendGetRequest('/chat/api/users/' + pseudo, params, Ajax.JSON, succesGetUser, error, true);
+    Ajax.sendGetRequest('../api/users/' + pseudo, params, Ajax.JSON, succesGetUser, error, true);
 }
 
 /**
@@ -61,7 +61,7 @@ function modifyUsername() {
         pseudo: $('h3[name=pseudo]').html()
     };
 
-    Ajax.sendPutRequest('/chat/api/users/' + new_username, params, Ajax.JSON, succesModifyUsername, error, true, Ajax.JSON);
+    Ajax.sendPutRequest('../api/users/' + new_username, params, Ajax.JSON, succesModifyUsername, error, true, Ajax.JSON);
 }
 
 /**
