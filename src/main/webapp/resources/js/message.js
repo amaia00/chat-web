@@ -154,7 +154,9 @@ function succesGetMessageById(data) {
 function deleteMessage() {
     var salon = getQueryParams()["salon"];
     var params= [];
-    Ajax.sendDeleteRequest('/chat/api/messages/' + salon + '/' + DERNIER_ID_MESSAGE, params, succesDeleteMessage, error, true, Ajax.FORM_URL_ENCODE);
+
+    Ajax.sendDeleteRequest('/chat/api/messages/' + salon + '/' + DERNIER_ID_MESSAGE, params,
+        Ajax.JSON, succesDeleteMessage, error, true);
 }
 
 /**
