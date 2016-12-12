@@ -69,6 +69,10 @@ iframe {
 	display:block;
 	margin:10px auto;
 }
+#mess .panel-body {
+	overflow: scroll;
+	height: 360px;
+}
 .block_message{
 	border-top:1px dashed #000;
 	border-bottom:1px dashed #000;
