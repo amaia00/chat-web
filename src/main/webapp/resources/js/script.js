@@ -50,16 +50,18 @@ $(document).ready(function () {
 		$(".bgelement").scrollTop(contents);
 
 	});
+
     $(window).on('load',function()
     {
         var contents = $('#scroll_body').height();
         $(".bgelement").scrollTop(700);
 
     });
+
 	$('.formmessage .btn').click(function () {
 	    console.log("ddd");
 
         $("#scroll_body").scrollTop(700);
-        
+
     });
 });

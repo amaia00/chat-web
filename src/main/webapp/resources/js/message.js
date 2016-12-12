@@ -44,6 +44,7 @@ function succesGetMessagesBySalon(data) {
     }
 
     scrollWindows();
+    $('#scroll_body').scrollTop(300);
     initTimer();
 }
 
@@ -82,7 +83,8 @@ function addMessage() {
                 }
             };
 
-            Ajax.sendPostRequest('../api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
+            $("#loading").css('visibility', 'visible');
+            Ajax.sendPostRequest('../api/salons/' + salon, params, Ajax.JSON, succesAddMessage, errorAddMessage, true, Ajax.JSON);
         } else{
             $('#message-content').focus();
         }
@@ -97,10 +99,16 @@ function succesAddMessage(data) {
     addMessageHtml(message);
 
     $("#message-content").val("");
-
     removeDeleteEditOption(message.id);
 
+    $("#loading").css('visibility', 'hidden');
+    $('#scroll_body').scrollTop(300);
+
     DERNIER_ID_MESSAGE = message.id;
+}
+
+function errorAddMessage() {
+    $("#loading").css('visibility', 'hidden');
 }
 
 /**

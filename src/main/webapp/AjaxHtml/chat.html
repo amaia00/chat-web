@@ -9,11 +9,11 @@
 <body onload="verifierURL()">
 <div class="container">
 	<a href="profil.html" class="btn btn-primary"> <span class="glyphicon glyphicon-chevron-left"></span> Choisir un autre salon</a>
-    <!-- TODO changer le valeur 500px-->
-    <!-- TODO le scroll ne marche pas-->
+
     <iframe id="messages" name="Affichageframe" src="affichage.html?salon=" style="height: 400px;"></iframe>
 	<form action="javascript:addMessage()" class="formmessage" method="POST">
 		<label style="margin:10px 0;">Message: </label>
+        <label id="loading" style="visibility: hidden">..::Chargement::..</label>
 	<textarea id="message-content" class="form-control" autofocus rows="3" name="contenu">
     </textarea>
 		<input type="submit" class="btn btn-primary" value="envoyer">
