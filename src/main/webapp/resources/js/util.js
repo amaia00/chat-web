@@ -112,7 +112,7 @@ function retournIndex() {
 function checkCookie() {
     var username = getCookie("username");
 
-    if (username != '') {
+    if (username != '' && typeof username != 'undefined') {
         return true;
     } else {
         retournIndex();

@@ -66,7 +66,7 @@ function newChannel() {
     params.push({key: "salon", value: $("#name_salon").val()});
     params.push({key: "pseudo", value: getCookie("username")});
 
-    Ajax.sendPostRequest('../api/salons', params, Ajax.JSON, successNewChannel, error, true, Ajax.FORM_URL_ENCODE);
+    Ajax.sendPostRequest('../api/salons', params, Ajax.JSON, successNewChannel, errorNewChannel, true, Ajax.FORM_URL_ENCODE);
 }
 
 /**
@@ -74,6 +74,14 @@ function newChannel() {
  * pour voir les messages en appelant la fonction goChat
  */
 function successNewChannel() {
+    var salon = $("#name_salon").val();
+    goChat(salon);
+}
+
+/**
+ * Si le salon déjà exists il retourne error, donc on envoie à l'utilisateur vers le forum de ce salon
+ */
+function errorNewChannel() {
     var salon = $("#name_salon").val();
     goChat(salon);
 }
