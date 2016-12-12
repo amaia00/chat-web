@@ -71,15 +71,21 @@ function errorGetMessagesBySalon(status) {
  */
 function addMessage() {
     if (checkCookie()) {
-        var salon = getQueryParams()['salon'];
-        var params = {
-            id: 3,
-            contenu: $('#message-content').val(),
-            user: {
-                pseudo: getCookie("username")
-            }
-        };
-        Ajax.sendPostRequest('../api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
+        if ($('#message-content').val().trim() != '') {
+
+            var salon = getQueryParams()['salon'];
+            var params = {
+                id: 3,
+                contenu: $('#message-content').val(),
+                user: {
+                    pseudo: getCookie("username")
+                }
+            };
+
+            Ajax.sendPostRequest('../api/salons/' + salon, params, Ajax.JSON, succesAddMessage, error, true, Ajax.JSON);
+        } else{
+            $('#message-content').focus();
+        }
     }
 }
 
